@@ -23,13 +23,13 @@ Cloud Native Korea Community Day 2025 발표 데모 저장소입니다.
 ### west 클러스터 CoreDNS 서비스 포트포워딩 (8080 -> 80, Local -> Service)
 
 ```bash
-kubectl --context kkamji-west -n kcd port-forward svc/mookup-kcd-2025-nginx 8080:80
+kubectl --context kkamji-west -n kcd port-forward svc/mookup-kcd-2025 8080:80
 ```
 
 ### east 클러스터 CoreDNS 서비스 포트포워딩 (8081 -> 80, Local -> Service)
 
 ```bash
-kubectl --context kkamji-east -n kcd port-forward svc/mookup-kcd-2025-nginx 8081:80
+kubectl --context kkamji-east -n kcd port-forward svc/mookup-kcd-2025 8081:80
 ```
 
 ## Talk Information
