@@ -18,6 +18,20 @@ Cloud Native Korea Community Day 2025 발표 데모 저장소입니다.
 - `terraform/`: Infrastructure as Code examples.
 - `README.md`: Project introduction and guide.
 
+## 서비스 포트포워딩
+
+### west 클러스터 CoreDNS 서비스 포트포워딩 (8080 -> 80, Local -> Service)
+
+```bash
+kubectl --context kkamji-west -n kcd port-forward svc/mookup-kcd-2025-nginx 8080:80
+```
+
+### east 클러스터 CoreDNS 서비스 포트포워딩 (8081 -> 80, Local -> Service)
+
+```bash
+kubectl --context kkamji-east -n kcd port-forward svc/mookup-kcd-2025-nginx 8081:80
+```
+
 ## Talk Information
 
 - Event: Cloud Native Korea Community Day 2025
@@ -26,11 +40,11 @@ Cloud Native Korea Community Day 2025 발표 데모 저장소입니다.
 
 ## Commit Convention
 
-- Issues and PRs are welcome.
-- Commit message format: `<type>: <summary>` (`feat|fix|docs|chore|refactor|test|style|perf|ci`).
+- Commit Message: `<type>: <summary>` (`feat|fix|docs|chore|refactor|test|style|perf|ci`).
 - Example: `docs: add project README`.
 
 ## Contact
 
 - GitHub: https://github.com/KKamJi98
 - Email: rlaxowl5460@gmail.com
+
