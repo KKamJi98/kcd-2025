@@ -4,7 +4,7 @@ metadata:
   name: kcd-2025-east
   namespace: argocd
 spec:
-  project: default
+  project: kcd-2025
   source:
     repoURL: https://github.com/KKamJi98/helm-charts.git
     path: kcd_2025
