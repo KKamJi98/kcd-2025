@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kcd-2025-west
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/KKamJi98/helm-charts.git
+    path: kcd_2025
+    targetRevision: HEAD
+    helm:
+      releaseName: mookup
+      parameters:
+      - name: prefix
+        value: kcd
+      - name: region
+        value: east
+      - name: replicaCount
+        value: "3"
+  destination:
+    name: kkamji-west
+    namespace: kcd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
