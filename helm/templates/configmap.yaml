@@ -31,7 +31,7 @@ data:
             <div class="kicker">Cloud Native Korea Community Day 2025</div>
             <h1>[${PREFIX}-${REGION}]</h1>
             <h2><span class="accent">Cloud Native Korea Community Day 2025</span> 에 오신것을 환영합니다!</h2>
-            <div class="footer">Time {{ now | date "2006-01-02 15:04:05 MST" }}</div>
+            <div class="footer">Time {{ dateInZone "2006-01-02 15:04:05 MST" now "Asia/Seoul" }}</div>
           </section>
         </main>
       </body>
