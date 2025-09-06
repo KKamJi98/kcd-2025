@@ -14,7 +14,7 @@ override.tf.json
 # General
 .DS_Store
 Thumbs.db
- 
+
 # Local prompts (ignored)
 prompts/
 AGENTS.md
