@@ -12,7 +12,7 @@ spec:
     path: helm
     targetRevision: HEAD
     helm:
-      releaseName: mookup
+      releaseName: app-of-apps-phase3
       parameters:
         - name: prefix
           value: kcd
