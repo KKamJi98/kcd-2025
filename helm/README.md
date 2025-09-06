@@ -43,7 +43,7 @@ helm upgrade --install kcd-2025-mookup . \
 배포 후 서비스 확인:
 
 ```bash
-kubectl -n kcd get deploy,po,svc -l app.kubernetes.io/name=kcd-2025-nginx
+kubectl -n kcd get deploy,po,svc -l app.kubernetes.io/name=kcd-2025
 ```
 
 포트포워딩(네임스페이스 표기):
@@ -123,7 +123,7 @@ open() "/etc/nginx/conf.d/default.conf" failed (2: No such file or directory)
 1) initContainer가 conf 복사를 수행했는지 확인
 
 ```bash
-kubectl -n kcd logs <pod> -c init-nginx-confd
+kubectl -n kcd logs <pod> -c init-confd
 ```
 
 2) confd 경로에 파일 존재 여부 확인(기동 중인 경우)
