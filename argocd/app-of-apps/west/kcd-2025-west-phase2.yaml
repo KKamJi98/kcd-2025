@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kcd-2025-west-phase2
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: kcd-2025
+  source:
+    repoURL: https://github.com/KKamJi98/kcd-2025.git
+    path: helm
+    targetRevision: HEAD
+    helm:
+      releaseName: mookup
+      parameters:
+        - name: prefix
+          value: kcd
+        - name: region
+          value: west
+        - name: replicaCount
+          value: "3"
+  destination:
+    name: kkamji-west
+    namespace: kcd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+
