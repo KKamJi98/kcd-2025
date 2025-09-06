@@ -30,7 +30,7 @@ spec:
         fsGroup: 101
         fsGroupChangePolicy: OnRootMismatch
       initContainers:
-        - name: init-nginx-confd
+        - name: init-confd
           image: busybox:1.36
           imagePullPolicy: IfNotPresent
           command:
@@ -44,9 +44,9 @@ spec:
               cp -rLv /confd-src/* /confd/
               ls -al /confd
           volumeMounts:
-            - name: nginx-confd
+            - name: confd
               mountPath: /confd
-            - name: nginx-confd-src
+            - name: confd-src
               mountPath: /confd-src
           securityContext:
             allowPrivilegeEscalation: false
@@ -90,7 +90,7 @@ spec:
             - name: html-templates
               mountPath: /etc/nginx/templates
               readOnly: true
-            - name: nginx-confd
+            - name: confd
               mountPath: /etc/nginx/conf.d
             - name: html-out
               mountPath: /usr/share/nginx/html
@@ -109,11 +109,11 @@ spec:
             items:
               - key: index.html.template
                 path: index.html.template
-        - name: nginx-confd
+        - name: confd
           emptyDir: {}
-        - name: nginx-confd-src
+        - name: confd-src
           configMap:
-            name: {{ include "kcd-2025-nginx.fullname" . }}-nginx-confd
+            name: {{ include "kcd-2025-nginx.fullname" . }}-confd
             items:
               - key: default.conf
                 path: default.conf
