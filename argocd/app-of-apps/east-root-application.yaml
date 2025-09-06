@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: kcd-2025-root-east
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: kcd-2025
   source:
@@ -21,4 +23,3 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
-
