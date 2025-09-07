@@ -20,9 +20,11 @@ spec:
           - region: west
             phase: phase3
   goTemplate: true
+  goTemplateOptions:
+    - missingkey=error
   template:
     metadata:
-      name: 'kcd-2025-appset-{{.region}}-{{.phase}}'
+      name: 'kcd-2025-appset-{{ .values.region }}-{{ .values.phase }}'
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
@@ -32,16 +34,16 @@ spec:
         targetRevision: HEAD
         path: helm
         helm:
-          releaseName: 'appset-{{.phase}}'
+          releaseName: 'appset-{{ .values.phase }}'
           parameters:
             - name: prefix
               value: kcd
             - name: region
-              value: '{{.region}}'
+              value: '{{ .values.region }}'
             - name: replicaCount
               value: "3"
       destination:
-        name: 'kkamji-{{.region}}'
+        name: 'kkamji-{{ .values.region }}'
         namespace: kcd
       syncPolicy:
         automated:
