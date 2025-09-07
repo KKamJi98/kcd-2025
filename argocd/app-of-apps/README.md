@@ -34,10 +34,10 @@ kubectl get app kcd-2025-root-west -n argocd -o yaml | rg finalizers
 
 ## Sync Hooks
 
-- sync-wave의 단계적 진행(0 → 1 → 2)을 보장하기 위해 Sync Hook Job을 추가했습니다.
+- 각 sync-wave 사이에 고정 10초 지연을 두는 단순 Sync Hook Job을 추가했습니다.
 - 위치: `east/sync-hooks.yaml`, `west/sync-hooks.yaml`
 - 동작:
-  - wave 1: 이전 단계 Application(phase1)이 Healthy/Synced가 될 때까지 대기
-  - wave 2: 이전 단계 Application(phase2)이 Healthy/Synced가 될 때까지 대기
-- Hook 어노테이션: `argocd.argoproj.io/hook: Sync`, `argocd.argoproj.io/hook-delete-policy: HookSucceeded`
-- RBAC은 Job보다 먼저 생성되도록 wave 0에 배치했습니다.
+  - wave 1: `sleep 10` 실행 후 다음 wave 진행
+  - wave 2: `sleep 10` 실행 후 다음 wave 진행
+- Hook 어노테이션: `argocd.argoproj.io/hook: Sync`, `argocd.argoproj.io/hook-delete-policy: HookSucceeded`, `argocd.argoproj.io/sync-wave` 사용
+- 별도의 RBAC/ServiceAccount는 사용하지 않습니다.
