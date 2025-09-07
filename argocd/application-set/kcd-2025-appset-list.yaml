@@ -23,7 +23,7 @@ spec:
         targetRevision: HEAD
         path: helm
         helm:
-          releaseName: 'baseline'
+          releaseName: 'appset'
           parameters:
             - name: prefix
               value: kcd
