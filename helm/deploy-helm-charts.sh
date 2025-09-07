@@ -10,22 +10,22 @@ helm upgrade --install kcd-2025-mookup . \
   -n kcd --create-namespace \
   -f kcd_west_values.yaml \
   --set fullnameOverride=kcd-2025-mookup \
-  --kube-context kkamji-west
+  --kube-context kcd-west
 
 helm upgrade --install kcd-2025-mookup . \
   -n kcd --create-namespace \
   -f kcd_east_values.yaml \
   --set fullnameOverride=kcd-2025-mookup \
-  --kube-context kkamji-east
+  --kube-context kcd-east
 
 echo "###########################################"
-echo "# Check Kubernetes Resources (kkamji-west)"
+echo "# Check Kubernetes Resources (kcd-west)"
 echo "###########################################"
 
-kubectl get deploy,po,svc,cm -n kcd --context kkamji-west
+kubectl get deploy,po,svc,cm -n kcd --context kcd-west
 
 echo "###########################################"
-echo "# Check Kubernetes Resources (kkamji-east)"
+echo "# Check Kubernetes Resources (kcd-east)"
 echo "###########################################"
 
-kubectl get deploy,po,svc,cm -n kcd --context kkamji-east
+kubectl get deploy,po,svc,cm -n kcd --context kcd-east

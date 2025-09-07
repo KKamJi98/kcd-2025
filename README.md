@@ -28,23 +28,23 @@ Cloud Native Korea Community Day 2025 발표 데모 저장소입니다.
 ### west 클러스터 데모 서비스 포트포워딩 (8080 -> 80)
 
 ```bash
-kubectl --context kkamji-west -n kcd port-forward svc/declarative-kcd-2025 8080:80
+kubectl --context kcd-west -n kcd port-forward svc/declarative-kcd-2025 8080:80
 ```
 
 ### east 클러스터 데모 서비스 포트포워딩 (8081 -> 80)
 
 ```bash
-kubectl --context kkamji-east -n kcd port-forward svc/declarative-kcd-2025 8081:80
+kubectl --context kcd-east -n kcd port-forward svc/declarative-kcd-2025 8081:80
 ```
 
 ### ApplicationSet 배포(phase별) 포트포워딩 예시
 
 ```bash
 # west 예시(phase1)
-kubectl --context kkamji-west -n kcd port-forward svc/appset-phase1-kcd-2025 8080:80
+kubectl --context kcd-west -n kcd port-forward svc/appset-phase1-kcd-2025 8080:80
 
 # east 예시(phase2)
-kubectl --context kkamji-east -n kcd port-forward svc/appset-phase2-kcd-2025 8080:80
+kubectl --context kcd-east -n kcd port-forward svc/appset-phase2-kcd-2025 8080:80
 ```
 
 ## Talk Information

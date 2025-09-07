@@ -18,7 +18,7 @@
 
 - Argo CD가 설치되어 있고 `argocd` 네임스페이스에서 동작 중일 것.
 - Argo CD `AppProject` 이름 `kcd-2025`가 존재하고 해당 리포지토리/경로/대상 클러스터에 대한 권한이 설정되어 있을 것.
-- kubeconfig에 `kkamji` 컨텍스트와 대상 클러스터 이름 `kkamji-east`, `kkamji-west`가 구성되어 있을 것.
+- kubeconfig에 `kkamji` 컨텍스트와 대상 클러스터 이름 `kcd-east`, `kcd-west`가 구성되어 있을 것.
 - Kubernetes 1.28+ 및 Argo CD 2.8+ 권장.
 
 ## 사용 방법
@@ -39,8 +39,8 @@ kubectl get applications -n argocd --context kkamji
 3) 배포 결과 확인(대상 네임스페이스: `kcd`)
 
 ```sh
-kubectl get all -n kcd --context kkamji-east
-kubectl get all -n kcd --context kkamji-west
+kubectl get all -n kcd --context kcd-east
+kubectl get all -n kcd --context kcd-west
 ```
 
 ## 포트포워딩
@@ -49,10 +49,10 @@ ApplicationSet에서 생성되는 각 Application은 Helm `releaseName=appset-<p
 
 ```sh
 # west 클러스터 예시(phase1)
-kubectl --context kkamji-west -n kcd port-forward svc/appset-phase1-kcd-2025 8080:80
+kubectl --context kcd-west -n kcd port-forward svc/appset-phase1-kcd-2025 8080:80
 
 # east 클러스터 예시(phase3)
-kubectl --context kkamji-east -n kcd port-forward svc/appset-phase3-kcd-2025 8080:80
+kubectl --context kcd-east -n kcd port-forward svc/appset-phase3-kcd-2025 8080:80
 ```
 
 ## 정리/삭제
@@ -103,7 +103,7 @@ spec:
             - name: replicaCount
               value: "3"
       destination:
-        name: 'kkamji-{{ .values.region }}'
+        name: 'kcd-{{ .values.region }}'
         namespace: kcd
       syncPolicy:
         automated:
@@ -119,7 +119,7 @@ spec:
 변경 포인트 가이드:
 
 - `source.repoURL`/`path`/`targetRevision`: 배포 소스 저장소와 경로를 환경에 맞게 조정하세요.
-- `destination.name`: Argo CD에 등록된 대상 클러스터 이름(`kkamji-east`/`kkamji-west`)과 일치해야 합니다.
+- `destination.name`: Argo CD에 등록된 대상 클러스터 이름(`kcd-east`/`kcd-west`)과 일치해야 합니다.
 - `project`: Argo CD `AppProject` 이름(`kcd-2025`). 리포지토리와 대상 리소스 접근 권한을 허용해야 합니다.
 - Helm 파라미터: `prefix`, `region`, `replicaCount`는 배포 정책에 맞게 조정 가능합니다.
 

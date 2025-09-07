@@ -26,8 +26,8 @@ terraform apply
 ## 클러스터 접근
 
 ```bash
-aws eks update-kubeconfig --name kkamji-east --region ${TF_VAR_region:-ap-northeast-2}
-aws eks update-kubeconfig --name kkamji-west --region ${TF_VAR_region:-ap-northeast-2}
+aws eks update-kubeconfig --name kcd-east --region ${TF_VAR_region:-ap-northeast-2}
+aws eks update-kubeconfig --name kcd-west --region ${TF_VAR_region:-ap-northeast-2}
 kubectl config get-contexts
 ```
 

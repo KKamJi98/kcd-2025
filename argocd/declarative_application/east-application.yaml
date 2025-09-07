@@ -19,7 +19,7 @@ spec:
       - name: replicaCount
         value: "3"
   destination:
-    name: kkamji-east
+    name: kcd-east
     namespace: kcd
   syncPolicy:
     automated:

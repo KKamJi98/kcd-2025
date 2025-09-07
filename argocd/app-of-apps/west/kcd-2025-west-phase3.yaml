@@ -23,7 +23,7 @@ spec:
         - name: replicaCount
           value: "3"
   destination:
-    name: kkamji-west
+    name: kcd-west
     namespace: kcd
   syncPolicy:
     automated:

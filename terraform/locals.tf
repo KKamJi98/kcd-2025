@@ -1,8 +1,8 @@
 locals {
   # 클러스터 이름 정의
   cluster_names = {
-    east = "kkamji-east"
-    west = "kkamji-west"
+    east = "kcd-east"
+    west = "kcd-west"
   }
 }
 
