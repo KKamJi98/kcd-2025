@@ -52,6 +52,10 @@ kubectl -n kcd get deploy,po,svc -l app.kubernetes.io/name=kcd-2025
 kubectl -n kcd port-forward svc/kcd-2025-mookup 8080:80
 ```
 
+> 참고: `fullnameOverride`를 사용하지 않는 경우 Service 기본 이름은
+> `<release>-kcd-2025` 형식입니다. 예: 릴리스 이름이 `declarative`라면
+> `svc/declarative-kcd-2025`로 포트포워딩할 수 있습니다.
+
 ## 값 파일 예시
 
 두 파일 모두 저장소 루트에 포함되어 있습니다.
