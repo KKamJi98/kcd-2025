@@ -1,12 +1,12 @@
 # Argo CD ApplicationSet
 
-이 디렉터리는 Argo CD ApplicationSet으로 동/서부 지역(east/west)과 단계(phase1~phase3)에 따라 Helm 차트를 반복적으로 배포하기 위한 선언과 스크립트를 포함합니다.
+이 디렉터리는 Argo CD ApplicationSet으로 동/서부 지역(east/west)에 따라 Helm 차트를 반복적으로 배포하기 위한 선언과 스크립트를 포함합니다.
 
 ## 개요
 
-- 리소스: `ApplicationSet` 1개가 6개의 `Application`(east/west × phase1~3)을 생성합니다.
+- 리소스: `ApplicationSet` 1개가 2개의 `Application`(east, west)을 생성합니다.
 - 동기화: 자동 동기화(`automated`) + `prune` + `selfHeal` 활성화로 GitOps 일관성을 유지합니다.
-- 템플릿: Go 템플릿(`goTemplate`)을 사용해 `region`, `phase` 변수를 바인딩합니다.
+- 템플릿: Go 템플릿(`goTemplate`)을 사용해 `region` 변수를 바인딩합니다.
 
 ## 구성 파일
 
@@ -45,14 +45,14 @@ kubectl get all -n kcd --context kcd-west
 
 ## 포트포워딩
 
-ApplicationSet에서 생성되는 각 Application은 Helm `releaseName=appset-<phase>`를 사용하므로 Service 이름은 `appset-<phase>-kcd-2025` 형태입니다.
+ApplicationSet에서 생성되는 각 Application은 Helm `releaseName=baseline`을 사용하므로 Service 이름은 `baseline-kcd-2025` 형태입니다.
 
 ```sh
-# west 클러스터 예시(phase1)
-kubectl --context kcd-west -n kcd port-forward svc/appset-phase1-kcd-2025 8080:80
+# west 클러스터 예시
+kubectl --context kcd-west -n kcd port-forward svc/baseline-kcd-2025 8080:80
 
-# east 클러스터 예시(phase3)
-kubectl --context kcd-east -n kcd port-forward svc/appset-phase3-kcd-2025 8080:80
+# east 클러스터 예시
+kubectl --context kcd-east -n kcd port-forward svc/baseline-kcd-2025 8080:80
 ```
 
 ## 정리/삭제
@@ -61,7 +61,7 @@ kubectl --context kcd-east -n kcd port-forward svc/appset-phase3-kcd-2025 8080:8
 ./delete-applicationsets.sh
 ```
 
-- ApplicationSet을 삭제하고, 생성된 `Application` 리소스도 `east/west × phase1~3` 조합으로 정리합니다.
+- ApplicationSet을 삭제하고, 생성된 `Application` 리소스도 `east`, `west`로 정리합니다.
 
 ## 구성 상세
 
@@ -80,11 +80,10 @@ spec:
     - list:
         elements:
           - region: east
-            phase: phase1
-          # ... east/west × phase1~3
+          - region: west
   template:
     metadata:
-      name: 'kcd-2025-appset-{{ .values.region }}-{{ .values.phase }}'
+      name: 'kcd-2025-appset-{{ .region }}'
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
@@ -94,16 +93,16 @@ spec:
         targetRevision: HEAD
         path: helm
         helm:
-          releaseName: 'appset-{{ .values.phase }}'
+          releaseName: 'baseline'
           parameters:
             - name: prefix
               value: kcd
             - name: region
-              value: '{{ .values.region }}'
+              value: '{{ .region }}'
             - name: replicaCount
               value: "3"
       destination:
-        name: 'kcd-{{ .values.region }}'
+        name: 'kcd-{{ .region }}'
         namespace: kcd
       syncPolicy:
         automated:

@@ -10,20 +10,10 @@ spec:
     - list:
         elements:
           - region: east
-            phase: phase1
-          - region: east
-            phase: phase2
-          - region: east
-            phase: phase3
           - region: west
-            phase: phase1
-          - region: west
-            phase: phase2
-          - region: west
-            phase: phase3
   template:
     metadata:
-      name: 'kcd-2025-appset-{{ .region }}-{{ .phase }}'
+      name: 'kcd-2025-appset-{{ .region }}'
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
@@ -33,7 +23,7 @@ spec:
         targetRevision: HEAD
         path: helm
         helm:
-          releaseName: 'appset-{{ .phase }}'
+          releaseName: 'baseline'
           parameters:
             - name: prefix
               value: kcd
@@ -42,7 +32,7 @@ spec:
             - name: replicaCount
               value: "3"
       destination:
-        name: 'kkamji-{{ .region }}'
+        name: 'kcd-{{ .region }}'
         namespace: kcd
       syncPolicy:
         automated:
