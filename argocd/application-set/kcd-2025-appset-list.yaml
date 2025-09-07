@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: kcd-2025-appset-list
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - region: east
+            phase: phase1
+          - region: east
+            phase: phase2
+          - region: east
+            phase: phase3
+          - region: west
+            phase: phase1
+          - region: west
+            phase: phase2
+          - region: west
+            phase: phase3
+  template:
+    metadata:
+      name: 'kcd-2025-appset-{{region}}-{{phase}}'
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: kcd-2025
+      source:
+        repoURL: https://github.com/KKamJi98/kcd-2025.git
+        targetRevision: HEAD
+        path: helm
+        helm:
+          releaseName: 'appset-{{phase}}'
+          parameters:
+            - name: prefix
+              value: kcd
+            - name: region
+              value: '{{region}}'
+            - name: replicaCount
+              value: "3"
+      destination:
+        name: 'kkamji-{{region}}'
+        namespace: kcd
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true
+          - PrunePropagationPolicy=foreground
+          - PruneLast=true
