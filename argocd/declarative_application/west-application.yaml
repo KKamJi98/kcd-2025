@@ -10,7 +10,7 @@ spec:
     path: helm
     targetRevision: HEAD
     helm:
-      releaseName: mookup
+      releaseName: declarative
       parameters:
       - name: prefix
         value: kcd

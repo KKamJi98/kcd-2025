@@ -6,11 +6,11 @@ metadata:
 spec:
   project: kcd-2025
   source:
-    repoURL: https://github.com/KKamJi98/helm-charts.git
-    path: kcd_2025
+    repoURL: https://github.com/KKamJi98/kcd-2025.git
+    path: helm    
     targetRevision: HEAD
     helm:
-      releaseName: mookup
+      releaseName: declarative
       parameters:
       - name: prefix
         value: kcd
