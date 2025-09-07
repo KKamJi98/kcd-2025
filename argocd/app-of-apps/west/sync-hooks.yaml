@@ -1,12 +1,12 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: west-wave1-delay
+  name: west-wave0-delay
   namespace: argocd
   annotations:
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   backoffLimit: 0
   template:
@@ -21,12 +21,12 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: west-wave2-delay
+  name: west-wave1-delay
   namespace: argocd
   annotations:
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   backoffLimit: 0
   template:
