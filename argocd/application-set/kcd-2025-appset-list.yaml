@@ -4,6 +4,8 @@ metadata:
   name: kcd-2025-appset-list
   namespace: argocd
 spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
   generators:
     - list:
         elements:
@@ -19,9 +21,6 @@ spec:
             phase: phase2
           - region: west
             phase: phase3
-  goTemplate: true
-  goTemplateOptions:
-    - missingkey=error
   template:
     metadata:
       name: 'kcd-2025-appset-{{ .values.region }}-{{ .values.phase }}'
