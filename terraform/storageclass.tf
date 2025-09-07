@@ -14,9 +14,9 @@ resource "kubernetes_storage_class_v1" "gp3_east" {
   allow_volume_expansion = true
 
   parameters = {
-    type       = "gp3"
-    fsType     = "ext4"
-    encrypted  = "true"
+    type      = "gp3"
+    fsType    = "ext4"
+    encrypted = "true"
   }
 
   mount_options = ["discard"]
@@ -42,9 +42,9 @@ resource "kubernetes_storage_class_v1" "gp3_west" {
   allow_volume_expansion = true
 
   parameters = {
-    type       = "gp3"
-    fsType     = "ext4"
-    encrypted  = "true"
+    type      = "gp3"
+    fsType    = "ext4"
+    encrypted = "true"
   }
 
   mount_options = ["discard"]
