@@ -23,7 +23,7 @@ spec:
             phase: phase3
   template:
     metadata:
-      name: 'kcd-2025-appset-{{ .values.region }}-{{ .values.phase }}'
+      name: 'kcd-2025-appset-{{ .region }}-{{ .phase }}'
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
@@ -33,16 +33,16 @@ spec:
         targetRevision: HEAD
         path: helm
         helm:
-          releaseName: 'appset-{{ .values.phase }}'
+          releaseName: 'appset-{{ .phase }}'
           parameters:
             - name: prefix
               value: kcd
             - name: region
-              value: '{{ .values.region }}'
+              value: '{{ .region }}'
             - name: replicaCount
               value: "3"
       destination:
-        name: 'kcd-{{ .values.region }}'
+        name: 'kkamji-{{ .region }}'
         namespace: kcd
       syncPolicy:
         automated:
