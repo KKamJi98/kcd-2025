@@ -1,0 +1,116 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sync-wave-barrier
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: sync-wave-barrier-role
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+rules:
+  - apiGroups: ["argoproj.io"]
+    resources: ["applications"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sync-wave-barrier-rb
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sync-wave-barrier-role
+subjects:
+  - kind: ServiceAccount
+    name: sync-wave-barrier
+    namespace: argocd
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: west-sync-barrier-wave1
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      serviceAccountName: sync-wave-barrier
+      restartPolicy: Never
+      containers:
+        - name: wait-app-healthy
+          image: bitnami/kubectl:1.28
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -eu
+            - -c
+            - |
+              NAMESPACE=argocd
+              APP=kcd-2025-west-phase1
+              echo "Waiting for ${APP} to be Healthy & Synced..."
+              for i in $(seq 1 720); do
+                HS=$(kubectl -n "$NAMESPACE" get application "$APP" -o jsonpath='{.status.health.status}' 2>/dev/null || true)
+                SS=$(kubectl -n "$NAMESPACE" get application "$APP" -o jsonpath='{.status.sync.status}' 2>/dev/null || true)
+                echo "health=${HS:-unknown} sync=${SS:-unknown}"
+                if [ "${HS}" = "Healthy" ] && [ "${SS}" = "Synced" ]; then
+                  echo "${APP} is Healthy & Synced"
+                  exit 0
+                fi
+                sleep 5
+              done
+              echo "Timeout waiting for ${APP}"
+              exit 1
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: west-sync-barrier-wave2
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      serviceAccountName: sync-wave-barrier
+      restartPolicy: Never
+      containers:
+        - name: wait-app-healthy
+          image: bitnami/kubectl:1.28
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -eu
+            - -c
+            - |
+              NAMESPACE=argocd
+              APP=kcd-2025-west-phase2
+              echo "Waiting for ${APP} to be Healthy & Synced..."
+              for i in $(seq 1 720); do
+                HS=$(kubectl -n "$NAMESPACE" get application "$APP" -o jsonpath='{.status.health.status}' 2>/dev/null || true)
+                SS=$(kubectl -n "$NAMESPACE" get application "$APP" -o jsonpath='{.status.sync.status}' 2>/dev/null || true)
+                echo "health=${HS:-unknown} sync=${SS:-unknown}"
+                if [ "${HS}" = "Healthy" ] && [ "${SS}" = "Synced" ]; then
+                  echo "${APP} is Healthy & Synced"
+                  exit 0
+                fi
+                sleep 5
+              done
+              echo "Timeout waiting for ${APP}"
+              exit 1
+
