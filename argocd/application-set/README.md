@@ -11,8 +11,8 @@
 ## 구성 파일
 
 - `kcd-2025-appset-list.yaml`: ApplicationSet 선언(생성 대상 목록, 템플릿, 동기화 정책).
-- `apply-applicationsets.sh`: ApplicationSet 생성/적용 스크립트.
-- `delete-applicationsets.sh`: ApplicationSet 및 생성된 Application 정리 스크립트.
+- `scripts/apply-applicationsets.sh`: ApplicationSet 생성/적용 스크립트.
+- `scripts/delete-applicationsets.sh`: ApplicationSet 및 생성된 Application 정리 스크립트.
 
 ## 전제 조건
 
@@ -26,7 +26,7 @@
 1) ApplicationSet 생성/적용
 
 ```sh
-./apply-applicationsets.sh
+./scripts/apply-applicationsets.sh
 ```
 
 2) 상태 확인
@@ -45,14 +45,14 @@ kubectl get all -n kcd --context kcd-west
 
 ## 포트포워딩
 
-ApplicationSet에서 생성되는 각 Application은 Helm `releaseName=baseline`을 사용하므로 Service 이름은 `baseline-kcd-2025` 형태입니다.
+ApplicationSet은 Helm `releaseName=appset`을 사용하므로 Service 이름은 `appset-kcd-2025`입니다.
 
 ```sh
 # west 클러스터 예시
-kubectl --context kcd-west -n kcd port-forward svc/baseline-kcd-2025 8080:80
+kubectl --context kcd-west -n kcd port-forward svc/appset-kcd-2025 8080:80
 
 # east 클러스터 예시
-kubectl --context kcd-east -n kcd port-forward svc/baseline-kcd-2025 8080:80
+kubectl --context kcd-east -n kcd port-forward svc/appset-kcd-2025 8080:80
 ```
 
 ## 정리/삭제
@@ -93,7 +93,7 @@ spec:
         targetRevision: HEAD
         path: helm
         helm:
-          releaseName: 'baseline'
+          releaseName: 'appset'
           parameters:
             - name: prefix
               value: kcd

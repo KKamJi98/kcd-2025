@@ -10,7 +10,7 @@ Argo CD Application-of-Applications 구성을 관리하는 디렉터리입니다
 ## 적용(Apply)
 
 ```bash
-./apply-applications.sh
+./scripts/apply-applications.sh
 # 또는
 kubectl apply -f west-root-application.yaml --context kkamji
 kubectl apply -f east-root-application.yaml --context kkamji
@@ -19,7 +19,7 @@ kubectl apply -f east-root-application.yaml --context kkamji
 ## 삭제(Delete)
 
 ```bash
-./delete-applications.sh
+./scripts/delete-applications.sh
 # 내부적으로 다음과 같이 실행됩니다.
 argocd app delete argocd/kcd-2025-root-west --cascade -y
 argocd app delete argocd/kcd-2025-root-east --cascade -y

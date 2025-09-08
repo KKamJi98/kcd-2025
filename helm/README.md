@@ -163,4 +163,4 @@ helm uninstall kcd-2025-declarative -n kcd
 
 ## 참고
 
-- 자세한 작업 흐름과 운영 메모는 `kcd_2025/AGENTS.md`를 참고하세요.
+- 자세한 작업 흐름과 운영 메모는 `helm/AGENTS.md`와 리포지토리 루트의 `AGENTS.md`를 참고하세요.

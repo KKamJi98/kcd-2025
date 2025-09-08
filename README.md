@@ -9,7 +9,7 @@ Cloud Native Korea Community Day 2025 발표 데모 저장소입니다.
 ## Quick Start
 
 - Requirements: Docker, a Kubernetes cluster, `kubectl` ≥ 1.28, `helm` ≥ 3.12.
-- Run: Demo-specific guides will be added under `docs/`.
+- Guides: 배포별 가이드는 `helm/README.md`, `argocd/app-of-apps/README.md`, `argocd/application-set/README.md`를 참고하세요.
 
 ## Repository Overview
 
@@ -20,10 +20,11 @@ Cloud Native Korea Community Day 2025 발표 데모 저장소입니다.
 
 ## 서비스 포트포워딩
 
-배포 방식에 따라 Service 이름이 달라집니다.
+배포 방식에 따라 Helm 릴리스명과 Service 이름이 다릅니다.
 
-- Declarative(Applications): Helm `releaseName=declarative` → Service: `declarative-kcd-2025`
-- ApplicationSet(AppSets): Helm `releaseName=appset-<phase>` → Service: `appset-<phase>-kcd-2025`
+- Declarative(Applications): 릴리스 `declarative` → Service `declarative-kcd-2025`
+- App of Apps(phase1~3): 릴리스 `app-of-apps-phase<N>` → Service `app-of-apps-phase<N>-kcd-2025`
+- ApplicationSet: 릴리스 `appset` → Service `appset-kcd-2025`
 
 ### west 클러스터 데모 서비스 포트포워딩 (8080 -> 80)
 
@@ -37,14 +38,24 @@ kubectl --context kcd-west -n kcd port-forward svc/declarative-kcd-2025 8080:80
 kubectl --context kcd-east -n kcd port-forward svc/declarative-kcd-2025 8081:80
 ```
 
-### ApplicationSet 배포(phase별) 포트포워딩 예시
+### ApplicationSet 배포 포트포워딩 예시
 
 ```bash
-# west 예시(phase1)
-kubectl --context kcd-west -n kcd port-forward svc/appset-phase1-kcd-2025 8080:80
+# west
+kubectl --context kcd-west -n kcd port-forward svc/appset-kcd-2025 8080:80
 
-# east 예시(phase2)
-kubectl --context kcd-east -n kcd port-forward svc/appset-phase2-kcd-2025 8080:80
+# east
+kubectl --context kcd-east -n kcd port-forward svc/appset-kcd-2025 8080:80
+```
+
+### App of Apps(phase별) 포트포워딩 예시
+
+```bash
+# phase1 (west)
+kubectl --context kcd-west -n kcd port-forward svc/app-of-apps-phase1-kcd-2025 8080:80
+
+# phase2 (east)
+kubectl --context kcd-east -n kcd port-forward svc/app-of-apps-phase2-kcd-2025 8080:80
 ```
 
 ## Talk Information
