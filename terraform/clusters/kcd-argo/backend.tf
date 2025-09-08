@@ -3,7 +3,7 @@ terraform {
     organization = "kkamji-lab"
 
     workspaces {
-      name = "kcd_2025_lab"
+      name = "kcd-argo"
     }
   }
 }
