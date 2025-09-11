@@ -4,5 +4,5 @@ set -euo pipefail
 
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-kubectl apply -f "$BASE_DIR/kcd-2025-appset-list.yaml" --context kkamji
-
+# The manifest file lives one level above the scripts directory
+kubectl apply -f "$BASE_DIR/../kcd-2025-appset-list.yaml" --context kcd-argo
