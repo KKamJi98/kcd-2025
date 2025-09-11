@@ -23,3 +23,8 @@ variable "access_entries" {
   default = {}
 }
 
+variable "domain_name" {
+  description = "Route53 hosted zone root domain (without wildcard)."
+  type        = string
+  default     = "kkamji.net"
+}
