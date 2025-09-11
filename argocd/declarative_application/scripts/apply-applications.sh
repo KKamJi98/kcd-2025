@@ -2,5 +2,8 @@
 
 set -euo pipefail
 
-kubectl apply -f east-application.yaml --context kcd-argo
-kubectl apply -f west-application.yaml --context kcd-argo
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CTX="${CTX:-kcd-argo}"
+
+kubectl apply -f "$SCRIPT_DIR/../east-application.yaml" --context "$CTX"
+kubectl apply -f "$SCRIPT_DIR/../west-application.yaml" --context "$CTX"
