@@ -22,4 +22,3 @@ variable "access_entries" {
   }))
   default = {}
 }
-

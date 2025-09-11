@@ -51,6 +51,14 @@ module "eks" {
 
       key_name = data.terraform_remote_state.basic.outputs.key_pair_name
 
+      metadata_options = {
+        http_endpoint               = "enabled"
+        http_protocol_ipv6          = "disabled"
+        http_put_response_hop_limit = 2
+        http_tokens                 = "required"
+        instance_metadata_tags      = "disabled"
+      }
+
       enable_bootstrap_user_data = true
       cloudinit_pre_nodeadm = [
         {
@@ -81,4 +89,3 @@ module "eks" {
     }
   }
 }
-
