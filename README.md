@@ -2,14 +2,14 @@
 
 Cloud Native Korea Community Day 2025 발표 데모 저장소
 
-- 목적: 발표 데모 코드, 매니페스트, IaC와 자료 관리함
+- 목적: 발표 데모 코드, 매니페스트, IaC와 자료 관리
 - 범위: Kubernetes, GitOps, Observability 등 클라우드 네이티브 주제 다룸
 - 상태: 준비 완료
 
 ## Quick Start
 
 - Requirements: Docker, a Kubernetes cluster, `kubectl` ≥ 1.28, `helm` ≥ 3.12.
-- Guides: 배포별 가이드 `helm/README.md`, `argocd/app-of-apps/README.md`, `argocd/application-set/README.md` 참고
+- Guides: 배포별 가이드는 `helm/README.md`, `argocd/app-of-apps/README.md`, `argocd/application-set/README.md` 참고
 
 ## Repository Overview
 
@@ -21,7 +21,7 @@ Cloud Native Korea Community Day 2025 발표 데모 저장소
 
 ## 스크립트 사용법
 
-모든 스크립트 실행 경로 무관 동작. 필요 시 컨텍스트/네임스페이스 환경 변수로 오버라이드 가능함
+모든 스크립트 실행 경로 무관 동작. 필요 시 컨텍스트/네임스페이스 환경 변수로 오버라이드
 
 ### 공통 환경 변수
 
@@ -60,27 +60,27 @@ NAMESPACE=argocd CTX=my-argo \
 ### Argo CD - App of Apps
 
 ```bash
-# 루트 애플리케이션 적용함
+# 루트 애플리케이션 적용
 ./argocd/app-of-apps/scripts/apply-applications.sh
 
-# 파이널라이저 정리(막힌 Application 강제 해제) 수행함
+# 파이널라이저 정리(막힌 Application 강제 해제) 수행
 ./argocd/app-of-apps/scripts/delete-finalizers.sh
 
-# 환경변수로 컨텍스트 지정함
+# 환경 변수로 컨텍스트 지정
 CTX=my-argo ./argocd/app-of-apps/scripts/apply-applications.sh
 ```
 
 ### Argo CD - 일괄 삭제 유틸리티
 
 ```bash
-# ApplicationSet, App-of-Apps, Declarative 순서로 안전하게 삭제함
+# ApplicationSet, App-of-Apps, Declarative 순서로 안전하게 삭제
 ./argocd/scripts/delete-all-apps.sh
 ```
 
 ### Helm 배포
 
 ```bash
-# west/east 두 컨텍스트로 차트 배포 및 리소스 확인함
+# west/east 두 컨텍스트로 차트 배포 및 리소스 확인
 ./helm/deploy-helm-charts.sh
 
 # 컨텍스트 오버라이드 예시
@@ -89,7 +89,7 @@ WEST_CTX=my-west EAST_CTX=my-east ./helm/deploy-helm-charts.sh
 
 ## 서비스 포트포워딩
 
-배포 방식에 따라 Helm 릴리스명과 Service 이름이 다릅니다.
+배포 방식에 따라 Helm 릴리스명과 Service 이름이 다름
 
 - Declarative(Applications): 릴리스 `declarative` → Service `declarative-kcd-2025`
 - App of Apps(phase1~3): 릴리스 `app-of-apps-phase<N>` → Service `app-of-apps-phase<N>-kcd-2025`
@@ -132,7 +132,7 @@ kubectl --context kcd-east -n kcd port-forward svc/app-of-apps-phase2-kcd-2025 8
 - Event: Cloud Native Korea Community Day 2025
 - Speaker: Taeji Kim (KKamJi)
 - Slides (PDF): [다운로드](docs/ArgoCD와_함께하는_Multi_Cluster_운영.pdf)
-- Video: To be shared after the talk.
+- Video: 발표 이후 공유 예정
 
 ## Commit Convention
 
