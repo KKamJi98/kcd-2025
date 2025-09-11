@@ -2,6 +2,10 @@
 
 Cloud Native Korea Community Day 2025 발표 데모 저장소입니다.
 
+- 목적: 발표 데모 코드, 매니페스트, IaC와 자료를 관리합니다.
+- 범위: Kubernetes, GitOps, Observability 등 클라우드 네이티브 주제.
+- 상태: 준비 완료
+
 ## Quick Start
 
 - Requirements: Docker, a Kubernetes cluster, `kubectl` ≥ 1.28, `helm` ≥ 3.12.
