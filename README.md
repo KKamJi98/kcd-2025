@@ -8,9 +8,18 @@ Cloud Native Korea Community Day 2025 발표 데모 저장소
 
 ## Quick Start
 
-- Requirements: Docker, `kubectl` ≥ 1.28, `helm` ≥ 3.12, Terraform ≥ 1.5, AWS CLI v2, Argo CD CLI
 - Guides: `helm/README.md`, `argocd/app-of-apps/README.md`, `argocd/application-set/README.md`
 - Demo(명령어 기반): `demo_script.md`에서 Terraform -> kubeconfig -> Argo CD 등록 -> Project -> Declarative -> App-of-Apps -> ApplicationSet 순서 확인
+
+## Demo 환경
+
+- Terraform: 1.13.x (테스트: 1.13.1, `.terraform-version`: 1.13.2)
+- Kubernetes: 1.33 (EKS `kubernetes_version`)
+- Argo CD: Helm 차트 `argo/argo-cd` 8.3.1 (App v3.1.1)
+- Helm: v3.16.2
+- kubectl: 1.28+
+- AWS CLI: v2
+- Argo CD CLI: v3.1.x 권장(서버와 동일 메이저/마이너)
 
 ## Demo Flow(개요)
 
