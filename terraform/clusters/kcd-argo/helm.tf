@@ -9,13 +9,9 @@ resource "helm_release" "aws_load_balancer_controller" {
   version          = "1.13.0"
   namespace        = "kube-system"
   create_namespace = false
-
-  # Ensure cluster is available before Helm install
-  depends_on = [
-    module.eks,
-    kubernetes_service_account.aws_load_balancer_controller,
-    aws_eks_pod_identity_association.aws_load_balancer_controller
-  ]
+  wait             = true
+  timeout          = 600
+  atomic           = true
 
   set = [
     {
@@ -28,8 +24,15 @@ resource "helm_release" "aws_load_balancer_controller" {
     },
     {
       name  = "serviceAccount.name"
-      value = "aws-load-balancer-controller"
+      value = kubernetes_service_account.aws_load_balancer_controller.metadata[0].name
     }
+  ]
+
+  # Ensure cluster is available before Helm install
+  depends_on = [
+    module.eks,
+    kubernetes_service_account.aws_load_balancer_controller,
+    aws_eks_pod_identity_association.aws_load_balancer_controller
   ]
 }
 
@@ -38,13 +41,14 @@ resource "helm_release" "aws_load_balancer_controller" {
 ###############################################
 
 resource "helm_release" "argocd" {
-  name             = "argo-cd"
+  name             = "argocd"
   repository       = "https://argoproj.github.io/argo-helm"
   chart            = "argo-cd"
   namespace        = "argocd"
   create_namespace = true
-
-  depends_on = [module.eks]
+  wait             = true
+  timeout          = 600
+  atomic           = true
 
   values = [<<-YAML
     global:
@@ -81,15 +85,11 @@ resource "helm_release" "argocd" {
       replicas: 1
     YAML
   ]
+
+  depends_on = [
+    module.eks,
+    helm_release.aws_load_balancer_controller
+  ]
 }
 
 
-resource "aws_eks_pod_identity_association" "aws_load_balancer_controller" {
-  cluster_name    = local.cluster_name
-  namespace       = "kube-system"
-  service_account = "aws-load-balancer-controller"
-  role_arn        = aws_iam_role.aws_load_balancer_controller_pod_identity.arn
-
-  # Make sure ServiceAccount exists before associating
-  depends_on = [kubernetes_service_account.aws_load_balancer_controller]
-}
