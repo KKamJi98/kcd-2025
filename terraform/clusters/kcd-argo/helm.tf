@@ -44,6 +44,7 @@ resource "helm_release" "argocd" {
   name             = "argocd"
   repository       = "https://argoproj.github.io/argo-helm"
   chart            = "argo-cd"
+  version          = "8.3.7"
   namespace        = "argocd"
   create_namespace = true
   wait             = true
@@ -52,7 +53,7 @@ resource "helm_release" "argocd" {
 
   values = [<<-YAML
     global:
-      domain: argocd-kcd.kkamji.net
+      domain: kcd-argo.kkamji.net
 
     certificate:
       enabled: true
@@ -62,7 +63,7 @@ resource "helm_release" "argocd" {
       ingress:
         enabled: true
         ingressClassName: alb
-        hostname: argocd-kcd.kkamji.net
+        hostname: kcd-argo.kkamji.net
         tls: true
         annotations:
           alb.ingress.kubernetes.io/scheme: internet-facing
@@ -91,5 +92,4 @@ resource "helm_release" "argocd" {
     helm_release.aws_load_balancer_controller
   ]
 }
-
 

@@ -82,5 +82,5 @@ kubectl config get-contexts
   - 차트 값 `clusterName`은 각 클러스터 이름으로 설정
 - kcd-argo 전용: Argo CD를 argo-helm 차트(`argo-cd`)로 배포(차트 `8.3.1`, App `v3.1.1`)
   - 네임스페이스 `argocd`, Ingress는 ALB 클래스로 구성
-  - 도메인 `argocd-kcd.kkamji.net`, ACM 인증서 ARN 적용
+  - 도메인 `kcd-argo.kkamji.net`, ACM 인증서 ARN 적용
   - 나머지 기본 구성은 kcd-east, kcd-west와 동일
