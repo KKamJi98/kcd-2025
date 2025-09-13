@@ -46,7 +46,7 @@ data:
           .wrap{ min-height:100dvh; display:grid; place-items:center; padding:28px }
           .card{
             position:relative; width:min(900px, 92vw); background:var(--card-bg); border:1px solid var(--card-bd);
-            border-radius:var(--radius); padding:36px 30px 32px; box-shadow:var(--shadow); backdrop-filter: blur(8px);
+            border-radius:var(--radius); padding:36px 30px 60px; box-shadow:var(--shadow); backdrop-filter: blur(8px);
           }
           .card:before{ content:""; position:absolute; inset:0; border-radius:inherit; padding:1px;
             background: linear-gradient(120deg, rgba(255,255,255,.35), rgba(255,255,255,.08));
@@ -71,6 +71,27 @@ data:
 
           .metaValue{ font-size:clamp(16px,2.6vw,20px); font-weight:800; letter-spacing:.01em }
           .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace }
+
+          .clock {
+            position: absolute; right: 16px; bottom: 16px;
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 10px 14px; border-radius: 999px;
+            background: var(--card-bg); border: 1px solid var(--card-bd);
+            box-shadow: var(--shadow); backdrop-filter: blur(8px);
+            color: var(--txt); font-weight: 700; letter-spacing: .02em;
+          }
+          .clock .dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: linear-gradient(120deg, var(--accent), var(--accent-2));
+            box-shadow: 0 0 8px var(--accent);
+          }
+          .clock .time {
+            font-size: clamp(16px, 2.6vw, 20px);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+          }
+          @media (max-width: 480px) {
+            .clock { right: 12px; bottom: 12px; padding: 8px 12px }
+          }
         </style>
       </head>
       <body>
@@ -86,7 +107,32 @@ data:
               <div class="pill" role="listitem"><i class="icon calendar" aria-hidden="true"></i><span class="metaValue" id="event-date">2025-09-16</span></div>
               <div class="pill" role="listitem"><i class="icon pin" aria-hidden="true"></i><span class="metaValue" id="venue">Seoul</span></div>
             </div>
+
+            <div class="clock" aria-live="polite">
+              <span class="dot" aria-hidden="true"></span>
+              <span class="time" id="clock-now">--:--:-- KST</span>
+            </div>
           </section>
         </main>
+
+        <script>
+          (function () {
+            const TZ = "Asia/Seoul";
+            const el = document.getElementById("clock-now");
+
+            function pad2(n){ return n.toString().padStart(2, "0"); }
+
+            function tick() {
+              const now = new Date();
+              const fmt = new Intl.DateTimeFormat("ko-KR", {
+                timeZone: TZ, hour12: false,
+                hour: "2-digit", minute: "2-digit", second: "2-digit"
+              }).formatToParts(now).reduce((acc,p)=>{ acc[p.type]=p.value; return acc; }, {});
+              el.textContent = `${pad2(fmt.hour||now.getHours())}:${pad2(fmt.minute||now.getMinutes())}:${pad2(fmt.second||now.getSeconds())} KST`;
+            }
+            tick();
+            setInterval(tick, 1000);
+          })();
+        </script>
       </body>
     </html>
