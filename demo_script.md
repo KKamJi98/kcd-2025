@@ -2,13 +2,17 @@
 
 Terraform -> kubeconfig -> Argo CD 등록 -> Project -> Declarative -> App-of-Apps -> ApplicationSet 순서로 진행합니다
 
-## 준비물
+## Demo 환경
 
-- AWS CLI v2 로그인 및 권한 준비(해당 계정/리전)
-- Terraform ≥ 1.5, `kubectl` ≥ 1.28, `helm` ≥ 3.12, Argo CD CLI
+- Terraform: v1.13.1 (`.terraform-version`: 1.13.2)
+- Kubernetes: 1.33 (EKS `kubernetes_version`)
+- Argo CD: Helm 차트 `argo/argo-cd` 8.3.1 (App v3.1.1)
+- Helm: v3.16.2
+- AWS CLI: v2.17.5
+- Argo CD CLI: v3.1.5
 - 리전: `ap-northeast-2`
 
-> 참고: Argo CD Ingress에 사용할 와일드카드 인증서가 필요하면 `terraform/clusters/kcd-acm`을 먼저 적용 
+> 참고: Argo CD Ingress에 사용할 와일드카드 인증서가 필요하면 `terraform/clusters/kcd-acm`을 먼저 적용
 
 ## 1) Terraform으로 클러스터 생성
 

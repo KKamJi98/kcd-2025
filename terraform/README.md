@@ -13,7 +13,7 @@
 ## 요구 사항
 
 - Terraform `>= 1.5.0`
-- AWS CLI v2, `kubectl`, `helm`
+- AWS CLI v2.17.5, `kubectl`, `helm`
 - Terraform Cloud Org `kkamji-lab`
   - Remote State Workspace: `basic` (VPC, Subnet, Key 등 참조)
 
