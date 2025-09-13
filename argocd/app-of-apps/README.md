@@ -34,7 +34,7 @@ kubectl get app kcd-2025-root-west -n argocd -o yaml | rg finalizers
 
 ## Sync Hooks
 
-- 각 sync-wave 사이(0→1, 1→2)에 고정 10초 지연을 두는 단순 Sync Hook Job 추가
+- 각 sync-wave 사이(0->1, 1->2)에 고정 10초 지연을 두는 단순 Sync Hook Job 추가
 - 위치: `east/sync-hooks.yaml`, `west/sync-hooks.yaml`
 - 동작:
   - wave 0: `sleep 10` 실행 후 wave 1 진행

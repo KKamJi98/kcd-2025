@@ -45,7 +45,7 @@ kubectl get all -n kcd --context kcd-west
 
 ## 포트포워딩
 
-ApplicationSet은 Helm `releaseName=appset` 사용 → Service 이름 `appset-kcd-2025`
+ApplicationSet은 Helm `releaseName=appset` 사용 -> Service 이름 `appset-kcd-2025`
 
 ```sh
 # west 클러스터 예시

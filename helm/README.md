@@ -11,7 +11,7 @@ Nginx Helm 차트. ConfigMap 기반 HTML 템플릿과 환경변수를 사용해
 - 자원: Deployment, Service, ConfigMap
 - 보안: `readOnlyRootFilesystem: true` 유지, 필요한 경로만 쓰기 가능
 - 안정화: `/etc/nginx/conf.d`를 `emptyDir`로 마운트하고 initContainer로
-  `default.conf` 주입 → 엔트리포인트 수정 경고 방지
+  `default.conf` 주입 -> 엔트리포인트 수정 경고 방지
 
 ## 사전 요구 사항
 
@@ -100,11 +100,11 @@ region: west
 - 출력 경로: `/usr/share/nginx/html`
 - 템플릿 확장자: `.template`
 - 환경변수: `PREFIX`, `REGION`(values로 주입)
-- 리스닝 포트: 컨테이너 8080, Service는 80 → 8080(TargetPort) 전달
+- 리스닝 포트: 컨테이너 8080, Service는 80 -> 8080(TargetPort) 전달
 - Nginx confd 구성:
   - `nginx-confd-configmap.yaml`의 `default.conf`를 initContainer가
     `/etc/nginx/conf.d`로 복사
-  - ConfigMap 볼륨은 내부적으로 심볼릭 링크 사용 → 복사 시 링크 해제 후
+  - ConfigMap 볼륨은 내부적으로 심볼릭 링크 사용 -> 복사 시 링크 해제 후
     실제 파일 생성 위해 `cp -rLv` 사용
 
 ## 볼륨/마운트 구성
