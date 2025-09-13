@@ -22,7 +22,9 @@ data:
           h1 { margin: 14px 0 8px; font-size: clamp(22px, 4vw, 34px); letter-spacing: .01em; }
           .accent { color: var(--accent); font-weight: 700; }
           .muted { color: var(--sub); margin-top: 10px; font-size: 14px; }
-          .footer { margin-top: 22px; font-size: 12px; color: #7f8ab3; }
+          .date { margin-top: 20px; display: flex; align-items: center; gap: 12px; }
+          .date-label { color: var(--sub); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; border: 1px solid rgba(255,255,255,0.18); padding: 4px 10px; border-radius: 999px; }
+          .date-value { font-size: clamp(22px, 5vw, 38px); font-weight: 800; letter-spacing: .06em; background: linear-gradient(90deg, #4e8cff, #9f7aea, #f6ad55); -webkit-background-clip: text; background-clip: text; color: transparent; }
         </style>
       </head>
       <body>
@@ -31,7 +33,10 @@ data:
             <div class="kicker">Cloud Native Korea Community Day 2025</div>
             <h1>[${PREFIX}-${REGION}]</h1>
             <h2><span class="accent">Cloud Native Korea Community Day 2025</span> 에 오신것을 환영합니다!</h2>
-            <div class="footer">Time {{ dateInZone "2006-01-02 15:04:05 MST" now "Asia/Seoul" }}</div>
+            <div class="date">
+              <span class="date-label">Event Date</span>
+              <span class="date-value">2025-09-16</span>
+            </div>
           </section>
         </main>
       </body>
