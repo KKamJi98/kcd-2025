@@ -68,7 +68,8 @@ resource "helm_release" "argocd" {
         annotations:
           alb.ingress.kubernetes.io/scheme: internet-facing
           alb.ingress.kubernetes.io/target-type: ip
-          alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+          alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}, {"HTTPS":443}]'
+          alb.ingress.kubernetes.io/ssl-redirect: '443'
           alb.ingress.kubernetes.io/healthcheck-protocol: HTTPS
           alb.ingress.kubernetes.io/backend-protocol: "HTTPS"
           alb.ingress.kubernetes.io/certificate-arn: ${data.terraform_remote_state.acm.outputs.acm_certificate_arn}
@@ -92,4 +93,3 @@ resource "helm_release" "argocd" {
     helm_release.aws_load_balancer_controller
   ]
 }
-
