@@ -25,7 +25,7 @@ data:
           .muted { color: var(--sub); margin-top: 10px; font-size: 14px; }
           .date { margin-top: 20px; display: flex; align-items: center; gap: 12px; }
           .date-label { color: var(--sub); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; border: 1px solid rgba(255,255,255,0.18); padding: 4px 10px; border-radius: 999px; }
-          .date-value { font-size: var(--h2-size); font-weight: 700; letter-spacing: .01em; color: #fff; }
+          .date-value { font-size: 12px; font-weight: 700; letter-spacing: .01em; color: #fff; }
         </style>
       </head>
       <body>
