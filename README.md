@@ -17,7 +17,7 @@ Cloud Native Korea Community Day 2025 발표 데모 저장소
 - Kubernetes: 1.33 (EKS `kubernetes_version`)
 - Argo CD: Helm 차트 `argo/argo-cd` 8.3.1 (App v3.1.1)
 - Helm: v3.16.2
-- AWS CLI: v2.17.5
+- AWS CLI: v2.30.1
 - Argo CD CLI: v3.1.5
 
 ## Demo Flow(개요)
