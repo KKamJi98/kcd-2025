@@ -8,8 +8,21 @@ Cloud Native Korea Community Day 2025 발표 데모 저장소
 
 ## Quick Start
 
-- Requirements: Docker, a Kubernetes cluster, `kubectl` ≥ 1.28, `helm` ≥ 3.12.
-- Guides: 배포별 가이드는 `helm/README.md`, `argocd/app-of-apps/README.md`, `argocd/application-set/README.md` 참고
+- Requirements: Docker, `kubectl` ≥ 1.28, `helm` ≥ 3.12, Terraform ≥ 1.5, AWS CLI v2, Argo CD CLI
+- Guides: `helm/README.md`, `argocd/app-of-apps/README.md`, `argocd/application-set/README.md`
+- Demo(명령어 기반): `demo_script.md`에서 Terraform -> kubeconfig -> Argo CD 등록 -> Project -> Declarative -> App-of-Apps -> ApplicationSet 순서 확인
+
+## Demo Flow(개요)
+
+1) Terraform으로 `kcd-east`, `kcd-west`, `kcd-argo` 클러스터 준비
+2) `aws eks update-kubeconfig`로 3개 컨텍스트 추가(`kcd-east`, `kcd-west`, `kcd-argo`)
+3) Argo CD에 east/west 클러스터 등록(`argocd cluster add`)
+4) `AppProject` 생성(레포/대상 리소스 범위 설정)
+5) Declarative Applications 적용(east/west)
+6) App-of-Apps 루트 적용 -> phase별 확장
+7) ApplicationSet으로 목록 기반 일괄 배포
+
+자세한 명령어는 `demo_script.md` 참고
 
 ## Repository Overview
 
@@ -18,10 +31,11 @@ Cloud Native Korea Community Day 2025 발표 데모 저장소
 - `terraform/`: Infrastructure as Code examples.
 - `docs/`: 발표 슬라이드(PDF)와 문서 자료.
 - `README.md`: Project introduction and guide.
+ - `demo_script.md`: 스크립트 없이 CLI만으로 전체 데모를 수행하는 가이드
 
 ## 스크립트 사용법
 
-모든 스크립트 실행 경로 무관 동작. 필요 시 컨텍스트/네임스페이스 환경 변수로 오버라이드
+모든 스크립트는 실행 경로 무관하게 동작합니다. 스크립트 대신 CLI만으로 실행하려면 `demo_script.md`를 참고하세요
 
 ### 공통 환경 변수
 
@@ -47,7 +61,7 @@ Cloud Native Korea Community Day 2025 발표 데모 저장소
 ./argocd/application-set/scripts/apply-applicationsets.sh
 
 # 컨텍스트 오버라이드 예시
-CTX=my-argo ./argocd/application-set/scripts/apply-applicationsets.sh
+CTX=kcd-argo ./argocd/application-set/scripts/apply-applicationsets.sh
 
 # 삭제
 ./argocd/application-set/scripts/delete-applicationsets.sh
@@ -89,11 +103,11 @@ WEST_CTX=my-west EAST_CTX=my-east ./helm/deploy-helm-charts.sh
 
 ## 서비스 포트포워딩
 
-배포 방식에 따라 Helm 릴리스명과 Service 이름이 다름
+배포 방식에 따라 Helm 릴리스명과 Service 이름이 다릅니다
 
-- Declarative(Applications): 릴리스 `declarative` → Service `declarative-kcd-2025`
-- App of Apps(phase1~3): 릴리스 `app-of-apps-phase<N>` → Service `app-of-apps-phase<N>-kcd-2025`
-- ApplicationSet: 릴리스 `appset` → Service `appset-kcd-2025`
+- Declarative(Applications): 릴리스 `declarative` -> Service `declarative-kcd-2025`
+- App of Apps(phase1~3): 릴리스 `app-of-apps-phase<N>` -> Service `app-of-apps-phase<N>-kcd-2025`
+- ApplicationSet: 릴리스 `appset` -> Service `appset-kcd-2025`
 
 ### west 클러스터 데모 서비스 포트포워딩 (8080 -> 80)
 
