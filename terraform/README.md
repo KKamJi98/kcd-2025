@@ -12,10 +12,10 @@
 
 ## 요구 사항
 
-- Terraform: >= 1.13 (테스트: v1.13.1, `.terraform-version`: 1.13.2)
+- Terraform: >= 1.13
 - AWS CLI: v2.30.1
 - Helm: v3.16.2
-- kubectl: 1.28+
+- kubectl: v1.33.x 권장(version skew ±1: v1.32–v1.34)
 - Terraform Cloud Org `kkamji-lab`
   - Remote State Workspace: `basic` (VPC, Subnet, Key 등 참조)
 
@@ -72,7 +72,7 @@ kubectl config get-contexts
 - EKS 모듈 `terraform-aws-modules/eks/aws ~> 21.0`
 - Kubernetes `1.33`
 - 노드그룹 `t4g.small` 2대 고정, `maxPods: 110`
-- 애드온: `coredns`, `kube-proxy`, `vpc-cni(프리픽스 위임)`, `aws-ebs-csi-driver(Pod Identity)`, `metrics-server`, `external-dns(Pod Identity)`, `snapshot-controller`
+- 애드온: `coredns`, `kube-proxy`, `vpc-cni(PREFIX_DELEGATION)`, `aws-ebs-csi-driver(Pod Identity)`, `metrics-server`, `external-dns(Pod Identity)`, `snapshot-controller`
 - 네트워킹: 원격 상태(`basic`)의 `vpc_id`, `public_subnet_ids`, `key_pair_name`
 
 ## Helm 추가 구성 및 클러스터 차이

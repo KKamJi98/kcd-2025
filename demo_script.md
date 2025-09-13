@@ -10,6 +10,7 @@ Terraform -> kubeconfig -> Argo CD 등록 -> Project -> Declarative -> App-of-Ap
 - Helm: v3.16.2
 - AWS CLI: v2.30.1
 - Argo CD CLI: v3.1.5
+- kubectl: v1.33.x 권장(version skew ±1: v1.32–v1.34)
 - 리전: `ap-northeast-2`
 
 > 참고: Argo CD Ingress에 사용할 와일드카드 인증서가 필요하면 `terraform/clusters/kcd-acm`을 먼저 적용

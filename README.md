@@ -13,10 +13,11 @@ Cloud Native Korea Community Day 2025 발표 데모 저장소
 
 ## Demo 환경
 
-- Terraform: v1.13.1 (`.terraform-version`: 1.13.2)
+- Terraform: v1.13.1 (repo `.terraform-version`: 1.13.2)
 - Kubernetes: 1.33 (EKS `kubernetes_version`)
 - Argo CD: Helm 차트 `argo/argo-cd` 8.3.1 (App v3.1.1)
 - Helm: v3.16.2
+- kubectl: v1.33.x 권장(version skew ±1: v1.32–v1.34)
 - AWS CLI: v2.30.1
 - Argo CD CLI: v3.1.5
 
