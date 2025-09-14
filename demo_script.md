@@ -1,19 +1,6 @@
-# 데모 실행 가이드(명령어)
+# Demo Script
 
-Terraform -> kubeconfig -> Argo CD 등록 -> Project -> Declarative -> App-of-Apps -> ApplicationSet 순서로 진행합니다
-
-## Demo 환경
-
-- Terraform: v1.13.1 (`.terraform-version`: 1.13.2)
-- Kubernetes: 1.33 (EKS `kubernetes_version`)
-- Argo CD: Helm 차트 `argo/argo-cd` 8.3.1 (App v3.1.1)
-- Helm: v3.16.2
-- AWS CLI: v2.30.1
-- Argo CD CLI: v3.1.5
-- kubectl: v1.33.x 권장(version skew ±1: v1.32–v1.34)
-- 리전: `ap-northeast-2`
-
-> 참고: Argo CD Ingress에 사용할 와일드카드 인증서가 필요하면 `terraform/clusters/kcd-acm`을 먼저 적용
+Terraform -> Update Kubeconfig -> Argo CD login & Cluster Add -> Project 생성 -> Declarative -> App-of-Apps -> ApplicationSet 순서로 진행
 
 ## 1) Terraform으로 클러스터 생성
 
@@ -47,6 +34,7 @@ kubectl --context kcd-argo -n argocd get pods
 ## 3) Argo CD 로그인 및 대상 클러스터 등록
 
 ```bash
+kubectl --context kcd-argo -n argocd get secrets argocd-initial-admin-secret -o yaml | yq .data.password | base64 -d
 argocd login kcd-argo.kkamji.net --username admin --grpc-web
 # 비밀번호 입력(초기 패스워드 또는 설정한 값)
 
@@ -70,6 +58,14 @@ kubectl --context kcd-argo -n argocd apply -f argocd/declarative_application/wes
 kubectl --context kcd-argo -n argocd apply -f argocd/declarative_application/east-application.yaml
 
 kubectl --context kcd-argo -n argocd get applications
+
+# 리소스 확인
+watch kubectl --context kcd-west -n kcd get deploy,svc,pods
+watch kubectl --context kcd-east -n kcd get deploy,svc,pods
+
+# 포트포워딩(8080/8081 -> 80)
+kubectl --context kcd-west -n kcd port-forward svc/declarative-kcd-2025 8080:80
+kubectl --context kcd-east -n kcd port-forward svc/declarative-kcd-2025 8081:80
 ```
 
 ## 6) App of Apps 적용
