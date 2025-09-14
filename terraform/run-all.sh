@@ -50,11 +50,14 @@ case "$ACTION" in
   *) echo "[ERROR] ACTION must be 'apply' or 'destroy'" >&2; usage; exit 1 ;;
 esac
 
-echo "[STEP 0] Ensure kubeconfigs exist"
-if [[ -x "$SCRIPT_DIR/update-kubeconfig.sh" ]]; then
-  "$SCRIPT_DIR/update-kubeconfig.sh" || true
-else
-  echo "[WARN] update-kubeconfig.sh not found; assuming contexts exist"
+# destroy 시 Argo 리소스 삭제를 위해 컨텍스트가 필요하므로 선 갱신
+if [[ "$ACTION" == "destroy" ]]; then
+  echo "[STEP 0] Ensure kubeconfigs exist (for destroy)"
+  if [[ -x "$SCRIPT_DIR/update-kubeconfig.sh" ]]; then
+    "$SCRIPT_DIR/update-kubeconfig.sh" || true
+  else
+    echo "[WARN] update-kubeconfig.sh not found; assuming contexts exist"
+  fi
 fi
 
 if [[ "$ACTION" == "destroy" ]]; then
@@ -191,6 +194,16 @@ for i in "${!PIDS[@]}"; do
     echo "[OK] $ACTION succeeded for $name"
   fi
 done
+
+# apply 가 끝난 뒤 생성된 클러스터의 컨텍스트를 최종 갱신
+if [[ "$ACTION" == "apply" ]]; then
+  echo "[STEP 3] Update kubeconfigs for created clusters"
+  if [[ -x "$SCRIPT_DIR/update-kubeconfig.sh" ]]; then
+    "$SCRIPT_DIR/update-kubeconfig.sh" || true
+  else
+    echo "[WARN] update-kubeconfig.sh not found; skipping final update"
+  fi
+fi
 
 if [[ "$FAIL" -ne 0 ]]; then
   echo "[DONE] Some $ACTION operations failed" >&2
