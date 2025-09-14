@@ -20,7 +20,15 @@ terraform init
 terraform apply -auto-approve
 ```
 
-## 2) kubeconfig 업데이트(컨텍스트 등록)
+## 2) 예비 alias
+
+```bash
+alias kwest='kubectl --context kcd-west'
+alias keast='kubectl --context kcd-east'
+alias kargo='kubectl --context kcd-argo'
+```
+
+## 3) kubeconfig 업데이트(컨텍스트 등록)
 
 ```bash
 aws eks update-kubeconfig --region ap-northeast-2 --name kcd-east --alias kcd-east
@@ -31,7 +39,7 @@ kubectl config get-contexts
 kubectl --context kcd-argo -n argocd get pods
 ```
 
-## 3) Argo CD 로그인 및 대상 클러스터 등록
+## 4) Argo CD 로그인 및 대상 클러스터 등록
 
 ```bash
 kubectl --context kcd-argo -n argocd get secrets argocd-initial-admin-secret -o yaml | yq .data.password | base64 -d
@@ -44,14 +52,14 @@ argocd cluster add kcd-east -y
 argocd cluster list
 ```
 
-## 4) AppProject 생성
+## 5) AppProject 생성
 
 ```bash
 kubectl --context kcd-argo -n argocd apply -f argocd/projects/kcd-2025.yaml
 kubectl --context kcd-argo -n argocd get appprojects
 ```
 
-## 5) Declarative Applications 적용
+## 6) Declarative Applications 적용
 
 ```bash
 kubectl --context kcd-argo -n argocd apply -f argocd/declarative_application/west-application.yaml
@@ -80,7 +88,7 @@ kubectl --context kcd-east -n kcd port-forward svc/declarative-kcd-2025 8081:80
 ./argocd/declarative_application/scripts/delete-applications.sh
 ```
 
-## 6) App of Apps 적용
+## 7) App of Apps 적용
 
 ```bash
 kubectl --context kcd-argo -n argocd apply -f argocd/app-of-apps/west-root-application.yaml
@@ -105,7 +113,7 @@ watch kubectl --context kcd-east -n kcd get pods
 ./argocd/app-of-apps/scripts/delete-applications.sh
 ```
 
-## 7) ApplicationSet 적용
+## 8) ApplicationSet 적용
 
 ```bash
 kubectl --context kcd-argo -n argocd apply -f argocd/application-set/kcd-2025-appset-list.yaml
@@ -134,7 +142,7 @@ kubectl --context kcd-east -n kcd port-forward svc/appset-kcd-2025 8081:80
 ./argocd/application-set/scripts/delete-applicationsets.sh
 ```
 
-## 8) 배포 검증 및 포트포워딩(예시)
+## 9) 배포 검증 및 포트포워딩(예시)
 
 ```bash
 # 리소스 확인
