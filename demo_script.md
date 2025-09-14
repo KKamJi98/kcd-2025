@@ -62,25 +62,35 @@ kubectl --context kcd-argo -n argocd get appprojects
 ## 6) Declarative Applications 적용
 
 ```bash
+##################################
+# watch로 지속 확인
+##################################
+watch kubectl --context kcd-west -n kcd get pods
+watch kubectl --context kcd-east -n kcd get pods
+
+##################################
+# application 생성
+##################################
 kubectl --context kcd-argo -n argocd apply -f argocd/declarative_application/west-application.yaml
 kubectl --context kcd-argo -n argocd apply -f argocd/declarative_application/east-application.yaml
 
 kubectl --context kcd-argo -n argocd get applications
 
-# 확인 명령어
+##################################
+# application 확인
+##################################
 argocd app list | grep kcd-2025
-argocd app get kcd-2025-west
-argocd app get kcd-2025-east
 
-# watch로 지속 확인
-watch -n 2 'kubectl --context kcd-argo -n argocd get applications'
-watch -n 2 'argocd app list | grep kcd-2025'
-
-# 리소스 확인
+##################################
+# application resource 확인
+##################################
 watch kubectl --context kcd-west -n kcd get pods
 watch kubectl --context kcd-east -n kcd get pods
 
-# 포트포워딩(8080/8081 -> 80)
+##################################
+# 접속 확인
+##################################
+# 8080(west) - 8081(east)
 kubectl --context kcd-west -n kcd port-forward svc/declarative-kcd-2025 8080:80
 kubectl --context kcd-east -n kcd port-forward svc/declarative-kcd-2025 8081:80
 
@@ -98,8 +108,6 @@ kubectl --context kcd-argo -n argocd get applications
 
 # 확인 명령어
 argocd app list | grep kcd-2025-root
-argocd app get kcd-2025-root-west
-argocd app get kcd-2025-root-east
 
 # watch로 지속 확인
 watch -n 2 'kubectl --context kcd-argo -n argocd get applications'
