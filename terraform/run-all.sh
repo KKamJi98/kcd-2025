@@ -154,21 +154,21 @@ run_tf() {
   local log_file="$dir/last-results.log"
   : > "$log_file"  # truncate
 
-  echo "==== [$cluster] terraform init ($(date -Iseconds)) ====\n" | tee -a "$log_file"
+  printf "==== [%s] terraform init (%s) ====\n" "$cluster" "$(date -Iseconds)" | tee -a "$log_file"
   if ! terraform -chdir="$dir" init "${TF_COMMON_FLAGS[@]}" 2>&1 | tee -a "$log_file"; then
     echo "[ERROR] terraform init failed for $cluster" | tee -a "$log_file"
     return 3
   fi
 
   if [[ "$ACTION" == "apply" ]]; then
-    echo "\n==== [$cluster] terraform apply -auto-approve ($(date -Iseconds)) ====\n" | tee -a "$log_file"
+    printf "\n==== [%s] terraform apply -auto-approve (%s) ====\n" "$cluster" "$(date -Iseconds)" | tee -a "$log_file"
     terraform -chdir="$dir" apply -auto-approve -lock-timeout="$TF_LOCK_TIMEOUT" "${TF_COMMON_FLAGS[@]}" 2>&1 | tee -a "$log_file"
   else
-    echo "\n==== [$cluster] terraform destroy -auto-approve ($(date -Iseconds)) ====\n" | tee -a "$log_file"
+    printf "\n==== [%s] terraform destroy -auto-approve (%s) ====\n" "$cluster" "$(date -Iseconds)" | tee -a "$log_file"
     terraform -chdir="$dir" destroy -auto-approve -lock-timeout="$TF_LOCK_TIMEOUT" "${TF_COMMON_FLAGS[@]}" 2>&1 | tee -a "$log_file"
   fi
 
-  echo "\n==== [$cluster] terraform $ACTION done ($(date -Iseconds)) ====\n" | tee -a "$log_file"
+  printf "\n==== [%s] terraform %s done (%s) ====\n" "$cluster" "$ACTION" "$(date -Iseconds)" | tee -a "$log_file"
 }
 
 FAIL=0
