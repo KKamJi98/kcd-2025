@@ -42,7 +42,7 @@ kubectl --context kcd-argo -n argocd get pods
 ## 4) Argo CD 로그인 및 대상 클러스터 등록
 
 ```bash
-kubectl --context kcd-argo -n argocd get secrets argocd-initial-admin-secret -o yaml | yq -r '.data.password' | base64 -d
+kubectl --context kcd-argo -n argocd get secrets argocd-initial-admin-secret -o yaml | yq '.data.password' | base64 -d
 argocd login kcd-argo.kkamji.net --username admin --grpc-web
 # 비밀번호 입력(초기 패스워드 또는 설정한 값)
 
