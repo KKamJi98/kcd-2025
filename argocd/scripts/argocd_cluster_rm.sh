@@ -2,7 +2,14 @@
 
 set -euo pipefail
 
-argocd login kcd-argo.kkamji.net --username admin --grpc-web
+argocd login kcd-argo.kkamji.net --username admin --grpc-web || true
 
-argocd cluster rm kcd-west -y
-argocd cluster rm kcd-east -y
+remove_cluster() {
+  local name="$1"
+  echo "[INFO] Removing cluster: $name (if registered)"
+  # Best-effort removal; ignore if it does not exist
+  argocd cluster rm "$name" -y || echo "[INFO] Cluster $name not found; skipping"
+}
+
+remove_cluster kcd-west
+remove_cluster kcd-east

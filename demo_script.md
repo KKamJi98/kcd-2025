@@ -59,13 +59,25 @@ kubectl --context kcd-argo -n argocd apply -f argocd/declarative_application/eas
 
 kubectl --context kcd-argo -n argocd get applications
 
+# 확인 명령어
+argocd app list | grep kcd-2025
+argocd app get kcd-2025-west
+argocd app get kcd-2025-east
+
+# watch로 지속 확인
+watch -n 2 'kubectl --context kcd-argo -n argocd get applications'
+watch -n 2 'argocd app list | grep kcd-2025'
+
 # 리소스 확인
-watch kubectl --context kcd-west -n kcd get deploy,svc,pods
-watch kubectl --context kcd-east -n kcd get deploy,svc,pods
+watch kubectl --context kcd-west -n kcd get pods
+watch kubectl --context kcd-east -n kcd get pods
 
 # 포트포워딩(8080/8081 -> 80)
 kubectl --context kcd-west -n kcd port-forward svc/declarative-kcd-2025 8080:80
 kubectl --context kcd-east -n kcd port-forward svc/declarative-kcd-2025 8081:80
+
+# 정리: Declarative Applications 삭제 (디렉터리 스크립트 사용)
+./argocd/declarative_application/scripts/delete-applications.sh
 ```
 
 ## 6) App of Apps 적용
@@ -75,6 +87,22 @@ kubectl --context kcd-argo -n argocd apply -f argocd/app-of-apps/west-root-appli
 kubectl --context kcd-argo -n argocd apply -f argocd/app-of-apps/east-root-application.yaml
 
 kubectl --context kcd-argo -n argocd get applications
+
+# 확인 명령어
+argocd app list | grep kcd-2025-root
+argocd app get kcd-2025-root-west
+argocd app get kcd-2025-root-east
+
+# watch로 지속 확인
+watch -n 2 'kubectl --context kcd-argo -n argocd get applications'
+watch -n 2 'argocd app list | grep kcd-2025'
+
+# 리소스 확인 (동/서부 클러스터)
+watch kubectl --context kcd-west -n kcd get pods
+watch kubectl --context kcd-east -n kcd get pods
+
+# 정리: App-of-Apps 삭제 (디렉터리 스크립트 사용)
+./argocd/app-of-apps/scripts/delete-applications.sh
 ```
 
 ## 7) ApplicationSet 적용
@@ -83,6 +111,27 @@ kubectl --context kcd-argo -n argocd get applications
 kubectl --context kcd-argo -n argocd apply -f argocd/application-set/kcd-2025-appset-list.yaml
 kubectl --context kcd-argo -n argocd get applicationsets
 kubectl --context kcd-argo -n argocd get applications
+
+# 확인 명령어
+argocd app list | grep appset
+argocd app get kcd-2025-appset-east
+argocd app get kcd-2025-appset-west
+
+# watch로 지속 확인
+watch -n 2 'kubectl --context kcd-argo -n argocd get applicationsets'
+watch -n 2 'kubectl --context kcd-argo -n argocd get applications'
+watch -n 2 'argocd app list | grep appset'
+
+# 리소스 확인 (동/서부 클러스터)
+watch kubectl --context kcd-west -n kcd get pods
+watch kubectl --context kcd-east -n kcd get pods
+
+# 포트포워딩(예시, 8080/8081 -> 80)
+kubectl --context kcd-west -n kcd port-forward svc/appset-kcd-2025 8080:80
+kubectl --context kcd-east -n kcd port-forward svc/appset-kcd-2025 8081:80
+
+# 정리: ApplicationSet 삭제 (디렉터리 스크립트 사용)
+./argocd/application-set/scripts/delete-applicationsets.sh
 ```
 
 ## 8) 배포 검증 및 포트포워딩(예시)

@@ -25,11 +25,4 @@ else
   echo "[WARN] declarative_application/scripts/delete-applications.sh not found; skipping"
 fi
 
-echo "[INFO] Removing finalizers for stuck Applications (best-effort)"
-if [[ -x "$BASE_DIR/../app-of-apps/scripts/delete-finalizers.sh" ]]; then
-  "$BASE_DIR/../app-of-apps/scripts/delete-finalizers.sh" || true
-else
-  echo "[WARN] app-of-apps/scripts/delete-finalizers.sh not found; skipping finalizer cleanup"
-fi
-
 echo "[DONE] All delete routines executed"
