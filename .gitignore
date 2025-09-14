@@ -18,5 +18,3 @@ Thumbs.db
 # Local prompts (ignored)
 prompts/
 AGENTS.md
-docs/
-demo_script.md
