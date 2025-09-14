@@ -18,21 +18,6 @@ spec:
         value: east
       - name: replicaCount
         value: "3"
-      values: |
-        ingress:
-          enabled: true
-          className: alb
-          annotations:
-            alb.ingress.kubernetes.io/scheme: internet-facing
-            alb.ingress.kubernetes.io/target-type: ip
-            alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
-            alb.ingress.kubernetes.io/ssl-redirect: '443'
-            alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:376129852049:certificate/80c94133-920f-4fd6-88ba-85f5d0440063
-          hosts:
-            - host: kcd-east.kkamji.net
-              paths:
-                - path: /
-                  pathType: Prefix
   destination:
     name: kcd-east
     namespace: kcd
