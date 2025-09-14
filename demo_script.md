@@ -42,7 +42,7 @@ kubectl --context kcd-argo -n argocd get pods
 ## 4) Argo CD 로그인 및 대상 클러스터 등록
 
 ```bash
-kubectl --context kcd-argo -n argocd get secrets argocd-initial-admin-secret -o yaml | yq .data.password | base64 -d
+kubectl --context kcd-argo -n argocd get secrets argocd-initial-admin-secret -o yaml | yq -r '.data.password' | base64 -d
 argocd login kcd-argo.kkamji.net --username admin --grpc-web
 # 비밀번호 입력(초기 패스워드 또는 설정한 값)
 
@@ -63,7 +63,12 @@ kubectl --context kcd-argo -n argocd get appprojects
 
 ```bash
 ##################################
-# watch로 지속 확인
+# Argo CD 확인
+##################################
+open https://kcd-argo.kkamji.net/
+
+##################################
+# watch로 지속 확인 (지속)
 ##################################
 watch kubectl --context kcd-west -n kcd get pods
 watch kubectl --context kcd-east -n kcd get pods
@@ -74,18 +79,16 @@ watch kubectl --context kcd-east -n kcd get pods
 kubectl --context kcd-argo -n argocd apply -f argocd/declarative_application/west-application.yaml
 kubectl --context kcd-argo -n argocd apply -f argocd/declarative_application/east-application.yaml
 
-kubectl --context kcd-argo -n argocd get applications
-
-##################################
-# application 확인
-##################################
-argocd app list | grep kcd-2025
-
 ##################################
 # application resource 확인
 ##################################
 watch kubectl --context kcd-west -n kcd get pods
 watch kubectl --context kcd-east -n kcd get pods
+
+##################################
+# application 확인
+##################################
+argocd app list | grep kcd-2025
 
 ##################################
 # 접속 확인
@@ -101,19 +104,28 @@ kubectl --context kcd-east -n kcd port-forward svc/declarative-kcd-2025 8081:80
 ## 7) App of Apps 적용
 
 ```bash
+##################################
+# Argo CD 확인
+##################################
+open https://kcd-argo.kkamji.net/
+
+##################################
+# watch로 지속 확인 (지속)
+##################################
+watch kubectl --context kcd-west -n kcd get pods
+watch kubectl --context kcd-east -n kcd get pods
+
+##################################
+# root application 생성
+##################################
 kubectl --context kcd-argo -n argocd apply -f argocd/app-of-apps/west-root-application.yaml
 kubectl --context kcd-argo -n argocd apply -f argocd/app-of-apps/east-root-application.yaml
 
 kubectl --context kcd-argo -n argocd get applications
 
-# 확인 명령어
-argocd app list | grep kcd-2025-root
-
-# watch로 지속 확인
-watch -n 2 'kubectl --context kcd-argo -n argocd get applications'
-watch -n 2 'argocd app list | grep kcd-2025'
-
-# 리소스 확인 (동/서부 클러스터)
+##################################
+# application resource 확인
+##################################
 watch kubectl --context kcd-west -n kcd get pods
 watch kubectl --context kcd-east -n kcd get pods
 
@@ -124,27 +136,28 @@ watch kubectl --context kcd-east -n kcd get pods
 ## 8) ApplicationSet 적용
 
 ```bash
-kubectl --context kcd-argo -n argocd apply -f argocd/application-set/kcd-2025-appset-list.yaml
-kubectl --context kcd-argo -n argocd get applicationsets
-kubectl --context kcd-argo -n argocd get applications
+##################################
+# Argo CD 확인
+##################################
+open https://kcd-argo.kkamji.net/
 
-# 확인 명령어
-argocd app list | grep appset
-argocd app get kcd-2025-appset-east
-argocd app get kcd-2025-appset-west
-
-# watch로 지속 확인
-watch -n 2 'kubectl --context kcd-argo -n argocd get applicationsets'
-watch -n 2 'kubectl --context kcd-argo -n argocd get applications'
-watch -n 2 'argocd app list | grep appset'
-
-# 리소스 확인 (동/서부 클러스터)
+##################################
+# watch로 지속 확인 (지속)
+##################################
 watch kubectl --context kcd-west -n kcd get pods
 watch kubectl --context kcd-east -n kcd get pods
 
-# 포트포워딩(예시, 8080/8081 -> 80)
-kubectl --context kcd-west -n kcd port-forward svc/appset-kcd-2025 8080:80
-kubectl --context kcd-east -n kcd port-forward svc/appset-kcd-2025 8081:80
+##################################
+# ApplicationSet 배포
+##################################
+kubectl --context kcd-argo -n argocd apply -f argocd/application-set/kcd-2025-appset-list.yaml
+
+##################################
+# ApplicationSet 확인
+##################################
+kubectl --context kcd-argo -n argocd get applicationsets
+kubectl --context kcd-argo -n argocd get applications
+argocd app list | grep appset
 
 # 정리: ApplicationSet 삭제 (디렉터리 스크립트 사용)
 ./argocd/application-set/scripts/delete-applicationsets.sh
@@ -165,10 +178,28 @@ kubectl --context kcd-east -n kcd port-forward svc/declarative-kcd-2025 8081:80
 ## 정리(옵션)
 
 ```bash
+# 현재 Application / ApplicationSet 상태 확인
+kubectl --context kcd-argo -n argocd get applications
+kubectl --context kcd-argo -n argocd get applicationsets
+argocd app list
+
 # Declarative / App-of-Apps / ApplicationSet 순서로 리소스 삭제
 kubectl --context kcd-argo -n argocd delete -f argocd/application-set/kcd-2025-appset-list.yaml --ignore-not-found
 kubectl --context kcd-argo -n argocd delete -f argocd/app-of-apps/west-root-application.yaml --ignore-not-found
 kubectl --context kcd-argo -n argocd delete -f argocd/app-of-apps/east-root-application.yaml --ignore-not-found
 kubectl --context kcd-argo -n argocd delete -f argocd/declarative_application/west-application.yaml --ignore-not-found
 kubectl --context kcd-argo -n argocd delete -f argocd/declarative_application/east-application.yaml --ignore-not-found
+
+# 삭제 후 상태 재확인
+kubectl --context kcd-argo -n argocd get applications || true
+kubectl --context kcd-argo -n argocd get applicationsets || true
+argocd app list || true
 ```
+
+다음 스크립트로 일괄/문제 상황 정리를 수행할 수 있습니다.
+
+- 전체 삭제 일괄 실행: `./argocd/scripts/delete-all-apps.sh`
+  - ApplicationSet → App-of-Apps → Declarative 순으로 내부 스크립트를 호출해 정리합니다.
+- 최종화자(finalizer)로 삭제가 막힐 때: `./argocd/scripts/delete-finalizers.sh`
+  - 기본값은 `NAMESPACE=argocd`, `CTX=kcd-argo`입니다.
+  - 예: `NAMESPACE=argocd CTX=kcd-argo ./argocd/scripts/delete-finalizers.sh`
