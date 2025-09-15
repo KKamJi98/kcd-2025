@@ -127,7 +127,9 @@ open http://localhost:8081
 ##################################
 pkill kubectl
 
+##################################
 # 정리: Declarative Applications 삭제 (디렉터리 스크립트 사용)
+##################################
 ./argocd/declarative_application/scripts/delete-applications.sh
 ```
 
@@ -158,7 +160,9 @@ kubectl --context kcd-argo -n argocd get applications
 ##################################
 argocd app list | grep kcd-2025
 
-# 정리: App-of-Apps 삭제 (디렉터리 스크립트 사용)
+##################################
+# 정리: App-of-Apps 삭제
+##################################
 ./argocd/app-of-apps/scripts/delete-applications.sh
 ```
 
@@ -188,16 +192,11 @@ kubectl --context kcd-argo -n argocd get applicationsets
 kubectl --context kcd-argo -n argocd get applications
 argocd app list | grep appset
 
+##################################
 # 정리: ApplicationSet 삭제 (디렉터리 스크립트 사용)
 ./argocd/application-set/scripts/delete-applicationsets.sh
+##################################
 ```
-
-
-
-
-
-
-
 
 
 
