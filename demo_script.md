@@ -116,11 +116,16 @@ argocd app list | grep kcd-2025
 # 접속 확인
 ##################################
 # 8080(west) - 8081(east)
-kubectl --context kcd-west -n kcd port-forward svc/declarative-kcd-2025 8080:80
-kubectl --context kcd-east -n kcd port-forward svc/declarative-kcd-2025 8081:80
+kubectl --context kcd-west -n kcd port-forward svc/declarative-kcd-2025 8080:80 &
+kubectl --context kcd-east -n kcd port-forward svc/declarative-kcd-2025 8081:80 &
 
 open http://localhost:8080
 open http://localhost:8081
+
+##################################
+# 포트포워딩 중지
+##################################
+pkill kubectl
 
 # 정리: Declarative Applications 삭제 (디렉터리 스크립트 사용)
 ./argocd/declarative_application/scripts/delete-applications.sh
