@@ -5,6 +5,9 @@ Terraform -> Update Kubeconfig -> Argo CD login & Cluster Add -> Project 생성 
 ## 1) Terraform으로 클러스터 생성
 
 ```bash
+##################################
+# Terraform Login 및 EKS Cluster Provisioning
+##################################
 terraform login
 
 cd terraform/clusters/kcd-east
@@ -23,6 +26,9 @@ terraform apply -auto-approve
 ## 2) 예비 alias
 
 ```bash
+##################################
+# alias 설정
+##################################
 alias kwest='kubectl --context kcd-west'
 alias keast='kubectl --context kcd-east'
 alias kargo='kubectl --context kcd-argo'
@@ -42,10 +48,25 @@ kubectl --context kcd-argo -n argocd get pods
 ## 4) Argo CD 로그인 및 대상 클러스터 등록
 
 ```bash
+##################################
+# ArgoCD 초기비밀번호 확인
+##################################
 kubectl --context kcd-argo -n argocd get secrets argocd-initial-admin-secret -o yaml | yq '.data.password' | base64 -d
+
+##################################
+# ArgoCD 비밀번호 변경
+##################################
+open https://kcd-argo.kkamji.net
+
+##################################
+# ArgoCD CLI 로그인
+##################################
 argocd login kcd-argo.kkamji.net --username admin --grpc-web
 # 비밀번호 입력(초기 패스워드 또는 설정한 값)
 
+##################################
+# ArgoCD Cluster 추가 및 리스트 확인
+##################################
 argocd cluster add kcd-west -y
 argocd cluster add kcd-east -y
 
@@ -55,7 +76,14 @@ argocd cluster list
 ## 5) AppProject 생성
 
 ```bash
+##################################
+# AppProject 생성
+##################################
 kubectl --context kcd-argo -n argocd apply -f argocd/projects/kcd-2025.yaml
+
+##################################
+# AppProject 확인
+##################################
 kubectl --context kcd-argo -n argocd get appprojects
 ```
 
@@ -80,12 +108,6 @@ kubectl --context kcd-argo -n argocd apply -f argocd/declarative_application/wes
 kubectl --context kcd-argo -n argocd apply -f argocd/declarative_application/east-application.yaml
 
 ##################################
-# application resource 확인
-##################################
-watch kubectl --context kcd-west -n kcd get pods
-watch kubectl --context kcd-east -n kcd get pods
-
-##################################
 # application 확인
 ##################################
 argocd app list | grep kcd-2025
@@ -96,6 +118,9 @@ argocd app list | grep kcd-2025
 # 8080(west) - 8081(east)
 kubectl --context kcd-west -n kcd port-forward svc/declarative-kcd-2025 8080:80
 kubectl --context kcd-east -n kcd port-forward svc/declarative-kcd-2025 8081:80
+
+open http://localhost:8080
+open http://localhost:8081
 
 # 정리: Declarative Applications 삭제 (디렉터리 스크립트 사용)
 ./argocd/declarative_application/scripts/delete-applications.sh
@@ -124,10 +149,9 @@ kubectl --context kcd-argo -n argocd apply -f argocd/app-of-apps/east-root-appli
 kubectl --context kcd-argo -n argocd get applications
 
 ##################################
-# application resource 확인
+# application 확인
 ##################################
-watch kubectl --context kcd-west -n kcd get pods
-watch kubectl --context kcd-east -n kcd get pods
+argocd app list | grep kcd-2025
 
 # 정리: App-of-Apps 삭제 (디렉터리 스크립트 사용)
 ./argocd/app-of-apps/scripts/delete-applications.sh
@@ -163,17 +187,14 @@ argocd app list | grep appset
 ./argocd/application-set/scripts/delete-applicationsets.sh
 ```
 
-## 9) 배포 검증 및 포트포워딩(예시)
 
-```bash
-# 리소스 확인
-kubectl --context kcd-west -n kcd get deploy,svc,pods
-kubectl --context kcd-east -n kcd get deploy,svc,pods
 
-# 포트포워딩(8080/8081 -> 80)
-kubectl --context kcd-west -n kcd port-forward svc/declarative-kcd-2025 8080:80
-kubectl --context kcd-east -n kcd port-forward svc/declarative-kcd-2025 8081:80
-```
+
+
+
+
+
+
 
 ## 정리(옵션)
 
@@ -196,10 +217,10 @@ kubectl --context kcd-argo -n argocd get applicationsets || true
 argocd app list || true
 ```
 
-다음 스크립트로 일괄/문제 상황 정리를 수행할 수 있습니다.
+다음 스크립트로 일괄/문제 상황 정리를 수행
 
 - 전체 삭제 일괄 실행: `./argocd/scripts/delete-all-apps.sh`
-  - ApplicationSet → App-of-Apps → Declarative 순으로 내부 스크립트를 호출해 정리합니다.
-- 최종화자(finalizer)로 삭제가 막힐 때: `./argocd/scripts/delete-finalizers.sh`
-  - 기본값은 `NAMESPACE=argocd`, `CTX=kcd-argo`입니다.
-  - 예: `NAMESPACE=argocd CTX=kcd-argo ./argocd/scripts/delete-finalizers.sh`
+  - ApplicationSet → App-of-Apps → Declarative 순으로 내부 스크립트를 호출해 정리
+- finalizer 때문에 삭제가 막힐 때: `./argocd/scripts/delete-finalizers.sh`
+  - 기본값은 `NAMESPACE=argocd`, `CTX=kcd-argo`
+  - ex: `NAMESPACE=argocd CTX=kcd-argo ./argocd/scripts/delete-finalizers.sh`
