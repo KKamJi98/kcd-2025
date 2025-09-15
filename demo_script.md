@@ -51,7 +51,7 @@ kubectl --context kcd-argo -n argocd get pods
 ##################################
 # ArgoCD 초기비밀번호 확인
 ##################################
-kubectl --context kcd-argo -n argocd get secrets argocd-initial-admin-secret -o yaml | yq '.data.password' | base64 -d
+kubectl --context kcd-argo -n argocd get secrets argocd-initial-admin-secret -o yaml | yq '.data.password' | base64 -d; echo
 
 ##################################
 # ArgoCD 비밀번호 변경
