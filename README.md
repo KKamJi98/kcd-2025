@@ -2,10 +2,6 @@
 
 Cloud Native Korea Community Day 2025 발표 데모 저장소
 
-- 목적: 발표 데모 코드, 매니페스트, IaC와 자료 관리
-- 범위: Kubernetes, GitOps, Observability 등 클라우드 네이티브 주제 다룸
-- 상태: 준비 완료
-
 ## Quick Start
 
 - Guides: `helm/README.md`, `argocd/app-of-apps/README.md`, `argocd/application-set/README.md`
