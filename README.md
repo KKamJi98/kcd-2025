@@ -31,7 +31,7 @@ Cloud Native Korea Community Day 2025 발표 데모 저장소
 6) App-of-Apps 루트 적용 -> phase별 확장
 7) ApplicationSet으로 목록 기반 일괄 배포
 
-자세한 명령어는 `demo_script.md` 참고 (v2 문서는 통합되어 제거됨)
+자세한 명령어는 `demo_script.md` 참고
 
 ## Repository Overview
 
@@ -44,7 +44,7 @@ Cloud Native Korea Community Day 2025 발표 데모 저장소
 
 ## 스크립트 사용법
 
-모든 스크립트는 실행 경로 무관하게 동작합니다. 스크립트 대신 CLI만으로 실행하려면 `demo_script.md`를 참고하세요
+모든 스크립트는 실행 경로 무관하게 동작합니다. 스크립트 대신 CLI만으로 실행하려면 `demo_script.md`를 참고
 
 ### 공통 환경 변수
 
@@ -112,7 +112,7 @@ WEST_CTX=my-west EAST_CTX=my-east ./helm/deploy-helm-charts.sh
 
 ## 서비스 포트포워딩
 
-배포 방식에 따라 Helm 릴리스명과 Service 이름이 다릅니다
+배포 방식에 따라 Helm 릴리스명과 Service 이름이 다를 수 있음
 
 - Declarative(Applications): 릴리스 `declarative` -> Service `declarative-kcd-2025`
 - App of Apps(phase1~3): 릴리스 `app-of-apps-phase<N>` -> Service `app-of-apps-phase<N>-kcd-2025`
@@ -154,7 +154,7 @@ kubectl --context kcd-east -n kcd port-forward svc/app-of-apps-phase2-kcd-2025 8
 
 - Event: Cloud Native Korea Community Day 2025
 - Speaker: Taeji Kim (KKamJi)
-- Slides (PDF): [다운로드](docs/presentation/ArgoCD와 함께하는 Multi Cluster 운영.pdf)
+- Slides (PDF): [다운로드](docs/presentation/ArgoCD와_함께하는_Multi-Cluster_운영.pdf)
 - Video: 발표 이후 공유 예정
 
 ## Commit Convention
