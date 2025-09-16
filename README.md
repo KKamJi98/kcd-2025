@@ -13,9 +13,9 @@ Cloud Native Korea Community Day 2025 발표 데모 저장소
 
 ## Demo 환경
 
-- Terraform: v1.13.1 (repo `.terraform-version`: 1.13.2)
+- Terraform: v1.13.2 (`terraform/clusters/*/.terraform-version` 기준)
 - Kubernetes: 1.33 (EKS `kubernetes_version`)
-- Argo CD: Helm 차트 `argo/argo-cd` 8.3.1 (App v3.1.1)
+- Argo CD: Helm 차트 `argo/argo-cd` 8.3.7
 - Helm: v3.16.2
 - kubectl: v1.33.x 권장(version skew ±1: v1.32–v1.34)
 - AWS CLI: v2.30.1
@@ -31,7 +31,7 @@ Cloud Native Korea Community Day 2025 발표 데모 저장소
 6) App-of-Apps 루트 적용 -> phase별 확장
 7) ApplicationSet으로 목록 기반 일괄 배포
 
-자세한 명령어는 `demo_script.md` 참고
+자세한 명령어는 `demo_script.md` 참고 (v2 문서는 통합되어 제거됨)
 
 ## Repository Overview
 
@@ -40,7 +40,7 @@ Cloud Native Korea Community Day 2025 발표 데모 저장소
 - `terraform/`: Infrastructure as Code examples.
 - `docs/`: 발표 슬라이드(PDF)와 문서 자료.
 - `README.md`: Project introduction and guide.
- - `demo_script.md`: 스크립트 없이 CLI만으로 전체 데모를 수행하는 가이드
+- `demo_script.md`: 스크립트 없이 CLI만으로 전체 데모를 수행하는 가이드
 
 ## 스크립트 사용법
 
@@ -154,7 +154,7 @@ kubectl --context kcd-east -n kcd port-forward svc/app-of-apps-phase2-kcd-2025 8
 
 - Event: Cloud Native Korea Community Day 2025
 - Speaker: Taeji Kim (KKamJi)
-- Slides (PDF): [다운로드](docs/ArgoCD와_함께하는_Multi_Cluster_운영.pdf)
+- Slides (PDF): [다운로드](docs/presentation/ArgoCD와 함께하는 Multi Cluster 운영.pdf)
 - Video: 발표 이후 공유 예정
 
 ## Commit Convention
