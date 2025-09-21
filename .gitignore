@@ -5,15 +5,41 @@
 crash.log
 crash.*.log
 terraform.tfvars
+*.tfvars
 *.tfvars.json
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
+*.tfplan
+*.plan
+.terraformrc
+terraform.rc
+
+# Helm
+# vendor dependencies and packaged charts
+helm/**/charts/
+helm/**/tmpcharts/
+helm/**/*.tgz
+# local-only values files (do not commit secrets or env-specific overrides)
+helm/**/values.local.yaml
+helm/**/values.*.local.yaml
+helm/**/values.*.override.yaml
+helm/**/values.*.private.yaml
+helm/**/values.*.secrets.yaml
+helm/**/values.*.secret.yaml
 
 # General
 .DS_Store
 Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+.env
+.env.*
+.envrc
+.direnv/
 
 # Local prompts (ignored)
 prompts/
