@@ -151,7 +151,7 @@ kubectl --context kcd-east -n kcd port-forward svc/app-of-apps-phase2-kcd-2025 8
 - Event: Cloud Native Korea Community Day 2025
 - Speaker: Taeji Kim (KKamJi)
 - Slides (PDF): [다운로드](docs/presentation/ArgoCD와_함께하는_Multi-Cluster_운영.pdf)
-- Video: 발표 이후 공유 예정
+- Video: [[CNKCD2025] ArgoCD와 함께하는 Multi Cluster 운영(김태지)](https://youtu.be/niByoNg-waY?si=jUn8tP9_RpQzv-H9)
 
 ## Commit Convention
 
